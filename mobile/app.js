@@ -1,11 +1,13 @@
 Ext.application({
+    controllers: ["Categorie", "Home"],
+
     name: 'YouFood',
 
     requires: [
         'Ext.MessageBox'
     ],
 
-    views: ['Main'],
+    views: ['Main', 'Home', 'Categorie','CategorieDataView','Produit'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
