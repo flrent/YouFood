@@ -4,7 +4,6 @@ Ext.define('YouFood.controller.Home', {
     config: {
         refs: {
             accueil:'homepanel',
-
         },
         control: {
             '#homedataview': {
@@ -13,19 +12,23 @@ Ext.define('YouFood.controller.Home', {
         }
     },
     getPlat: function(dt, index, item, record, e,opts) {
-        
+        // utiliser ext.create avec data
         this.getAccueil().push({
             xtype:'categorie',
             title:record.get("nom"),
+            defaults:{
+                styleHtmlContent:true
+            },
             items:[
                 {
                     flex:0.5,
-                    html:record.get("nom")
+                    html:"<h3>"+record.get("nom")+"</h3>",
+                    style:'background:#c37e4c'
                 },
                 {
                     xtype:'categoriedataview',
                     store:{
-                        fields:["nom", "desc", "items"],
+                        fields:['nom','type','desc','photo'],
                         autoLoad:true,
                         data:record.raw.items
                     }

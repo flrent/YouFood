@@ -12,16 +12,25 @@ Ext.define('YouFood.controller.Categorie', {
             }
         }
     },
-    platSelected: function(e) {
-        new Ext.Panel({
-            modal:true,
-            centered:true,
+    platSelected: function(dt, index, item, record, e,opts) {
+       this.getAccueil().push({
+            title:record.get("nom"),
             items:[
-            {
-                html:'test'
-            },{
-                xtype:'produit'
-            }]
-        }).show();
+                {
+                    xtype:'produit',
+                    data:{
+                        "nom":record.get("nom"),
+                        "photo":record.get("photo"),
+                        "desc":record.get("desc"),
+                    }
+                },
+                {
+                    xtype:'button',
+                    ui:'action',
+                    id:'buttoncommander',
+                    text:'Commander'
+                }
+            ]
+        });
     }
 });

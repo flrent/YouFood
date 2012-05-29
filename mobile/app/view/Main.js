@@ -10,6 +10,9 @@ Ext.define("YouFood.view.Main", {
         items: [
             {
                 xtype:'homepanel'
+            },
+            {
+                xtype:'tablepanel'
             }
         ]
     }

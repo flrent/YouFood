@@ -1,4 +1,11 @@
+// Let's start with the basics
+$base-color:  #ab6634;
+$active-color:  #662b00;
+
 @import 'sencha-touch/default/all';
+
+
+
 
 // You may remove any of the following modules that you
 // do not use in order to create a smaller css file.
@@ -17,3 +24,17 @@
 @include sencha-msgbox;
 
 // Your custom code goes here...
+
+.produit {
+	.title {
+		margin-bottom:40px;
+	}
+	.photo {
+		float:left;
+		img {
+			height:400px;
+			width:500px;	
+			margin-right:30px;
+		}
+	}
+}

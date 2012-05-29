@@ -8,12 +8,13 @@
 				{
 					"id":3,
 					"nom":"Saumon fumé",
-					"desc":""
+					"photo":"resources/images/caviar.jpg",
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":4,
 					"nom":"Caviar cru",
-					"desc":""
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				}
 			]
 		},
@@ -25,12 +26,14 @@
 				{
 					"id":5,
 					"nom":"Magret de canard",
-					"desc":""
+					"photo":"resources/images/caviar.jpg",
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":6,
 					"nom":"Roti de porc",
-					"desc":""
+					"photo":"resources/images/caviar.jpg",
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				}
 			]
 		},
@@ -42,12 +45,14 @@
 				{
 					"id":7,
 					"nom":"Cookies",
-					"desc":""
+					"photo":"resources/images/caviar.jpg",
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":8,
 					"nom":"Brownies",
-					"desc":""
+					"photo":"resources/images/caviar.jpg",
+					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				}
 			]
 		}
