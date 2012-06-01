@@ -40,6 +40,11 @@ Ext.define('YouFood.view.Home', {
 	 							]
 	 						}
 	 					]
+	 				},{
+	 					xtype:'button',
+	 					text:'Commencez votre sélection',
+	 					ui:'confirm',
+	 					id:'buttonTest'
 	 				},
 			        {
 			        	flex:1,

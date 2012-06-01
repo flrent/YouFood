@@ -23,7 +23,9 @@ $active-color:  #662b00;
 @include sencha-msgbox;
 
 @include pictos-iconmask('user_business');
+@include pictos-iconmask('compose1');
 @include pictos-iconmask('check_black2');
+@include pictos-iconmask('note2');
 
 // Your custom code goes here...
 $bg: #2d1300;
@@ -69,6 +71,19 @@ $bg: #2d1300;
 		h3 {color:white;font-size:26px;text-transform:uppercase;}
 	}
 }
+
+.table {
+	.produits {
+		.edit {
+			display:none;float:left;width:60px;height:150px;
+			margin-right:40px;
+			background:url(../images/delete.png) no-repeat center center;
+		}
+	}
+	&.edited {
+		.edit {display:block;}
+	}
+}
 .categorie_header {
 	border-bottom: 1px solid #2A2A2A;
 
@@ -112,11 +127,6 @@ $bg: #2d1300;
 		text-shadow: 1px 1px 1px black;
 	}
 }
-
-
-
-
-
 
 /*
 	OVERRIDES

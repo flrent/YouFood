@@ -6,7 +6,7 @@ Ext.define("YouFood.view.Main", {
     ],
     config: {
         tabBarPosition: 'bottom',
-
+        id:'mainYouFoodTabBar',
         items: [
             {
                 xtype:'homepanel'
