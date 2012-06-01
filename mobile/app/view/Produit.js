@@ -5,18 +5,17 @@ Ext.define('YouFood.view.Produit', {
 	config: {
 		data:null,
 		styleHtmlContent:true,
+		layout:'fit',
 		tpl: [
-			'<div class="produit">',
-				'<div class="photo">',
-					'<img src="{photo}" alt="" />',
-				'</div>',
-				'<div class="title">',
-					'<h3>{nom}</h3>',
-				'</div>',
-				'<div class="clear"></div>',
-				'<div class="description">',
-					'{desc}',
-				'</div>',
+			'<div class="photo">',
+				'<img src="{photo}" alt="" />',
+			'</div>',
+			'<div class="title">',
+				'<h3>{nom}</h3>',
+			'</div>',
+			'<div class="clear"></div>',
+			'<div class="description">',
+				'{desc}',
 			'</div>',
 		]
 	 }

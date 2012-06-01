@@ -14,7 +14,9 @@ Ext.define('YouFood.controller.Categorie', {
     },
     platSelected: function(dt, index, item, record, e,opts) {
        this.getAccueil().push({
-            title:record.get("nom"),
+            title:"YouFood",
+            cls:'produit',
+            id:'produitContainer',
             items:[
                 {
                     xtype:'produit',
@@ -27,8 +29,9 @@ Ext.define('YouFood.controller.Categorie', {
                 {
                     xtype:'button',
                     ui:'action',
-                    id:'buttoncommander',
-                    text:'Commander'
+                    cls:'buttoncommander',
+                    text:'Commander',
+                    docked:'bottom'
                 }
             ]
         });

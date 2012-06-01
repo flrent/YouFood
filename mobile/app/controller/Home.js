@@ -15,13 +15,14 @@ Ext.define('YouFood.controller.Home', {
         // utiliser ext.create avec data
         this.getAccueil().push({
             xtype:'categorie',
-            title:record.get("nom"),
+            title:"YouFood",
             defaults:{
                 styleHtmlContent:true
             },
             items:[
                 {
-                    flex:0.5,
+                    flex:0.3,
+                    cls:'categorie_header',
                     html:"<h3>"+record.get("nom")+"</h3>",
                     style:'background:#c37e4c'
                 },

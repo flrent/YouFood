@@ -1,5 +1,5 @@
 Ext.application({
-    controllers: ["Produit", "Categorie", "Home"],
+    controllers: ["Settings", "Table", "Produit", "Categorie", "Home"],
 
     name: 'YouFood',
 
@@ -7,7 +7,7 @@ Ext.application({
         'Ext.MessageBox'
     ],
 
-    views: ['Main', 'Home', 'Categorie','CategorieDataView','Produit', 'Table', 'TableDataView'],
+    views: ['Main', 'Home', 'Categorie','CategorieDataView','Produit', 'Table', 'TableDataView', 'SettingsPanel'],
 
     icon: {
         '57': 'resources/icons/Icon.png',

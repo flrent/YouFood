@@ -6,7 +6,6 @@ $active-color:  #662b00;
 
 
 
-
 // You may remove any of the following modules that you
 // do not use in order to create a smaller css file.
 @include sencha-panel;
@@ -23,12 +22,76 @@ $active-color:  #662b00;
 @include sencha-form;
 @include sencha-msgbox;
 
-// Your custom code goes here...
+@include pictos-iconmask('user_business');
+@include pictos-iconmask('check_black2');
 
+// Your custom code goes here...
+$bg: #2d1300;
+
+.accueil {
+	h1 {
+		color:#F60;
+	}
+}
+
+.home {
+	background:$bg;
+
+	.box {
+		padding:20px;
+		padding-left:20px;
+		float:left;
+		width:25%;
+		img {
+			width:100%;
+
+		}
+		p {
+			color:white;
+			text-shadow:2px 2px 2px #2A2A2A;
+			font-size:30px;
+			text-transform:uppercase;
+		}
+	}
+}
+
+
+.categorie, .table {
+	background:$bg;
+
+	.produits {
+		height:160px;
+		overflow: hidden;
+
+		img {float:left;margin-right:20px;width:20%;}
+		desc {color:#0F0F0F;}
+		p {color:white;}
+		h3 {color:white;font-size:26px;text-transform:uppercase;}
+	}
+}
+.categorie_header {
+	border-bottom: 1px solid #2A2A2A;
+
+	h3 {		
+		font-size: 80px;
+		text-transform: uppercase;
+		text-align: right;
+		text-shadow: 1px 1px 11px #F61;
+		color: white;
+	}
+}
 .produit {
+	background:$bg;
+
 	.title {
 		margin-bottom:40px;
+		h3 {
+			color:white;
+			font-size:30px;
+			text-transform:uppercase;
+		}
 	}
+	.description {color:white;}
 	.photo {
 		float:left;
 		img {
@@ -38,3 +101,25 @@ $active-color:  #662b00;
 		}
 	}
 }
+
+.settingspanel {
+	background:$bg;
+
+	#numeroTablePanel p {
+		color: #CCC;
+		font-size: 12px;
+		text-align: center;
+		text-shadow: 1px 1px 1px black;
+	}
+}
+
+
+
+
+
+
+/*
+	OVERRIDES
+*/
+
+.x-form-fieldset-title, .x-form-fieldset-instructions {color:white;text-shadow:1px 1px 1px black;}

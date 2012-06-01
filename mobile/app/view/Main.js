@@ -13,6 +13,9 @@ Ext.define("YouFood.view.Main", {
             },
             {
                 xtype:'tablepanel'
+            },
+            {
+                xtype:'settingspanel'
             }
         ]
     }
