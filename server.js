@@ -16,7 +16,6 @@ db.open(function(err, db) {
     console.log("We are connected");
   }
 });
-	
 app.get('/', function(req, res){
 	console.log("serveur /");
   res.send('hello world');
@@ -161,37 +160,14 @@ app.post('/CreateOrder', function(req, res){
 	});
 });
 
-app.post('/SetOrderWaiting', function(req, res){
+/*app.post('/SetOrderWaiting', function(req, res){
 	var idOrder = req.body["idOrder"];
 	var orders = db.collection("orders", function(err, collection){
 		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":0}}, function(err, orderDoc){
 			res.send(orderDoc);
 	}); 
-});
+});*/
 
-app.post('/SetOrderInProgress', function(req, res){
-	var idOrder = req.body["idOrder"];
-	var orders = db.collection("orders", function(err, collection){
-		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":1}}, function(err, orderDoc){
-			res.send(orderDoc);
-	});
-});
-
-app.post('/SetOrderReady', function(req, res){
-	var idOrder = req.body["idOrder"];
-	var orders = db.collection("orders", function(err, collection){
-		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":2}}, function(err, orderDoc){
-			res.send(orderDoc);
-	});
-});
-
-app.post('/SetOrderDelivered', function(req, res){
-	var idOrder = req.body["idOrder"];
-	var orders = db.collection("orders", function(err, collection){
-		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":3}}, function(err, orderDoc){
-			res.send(orderDoc);
-	});
-});
 
 
 
