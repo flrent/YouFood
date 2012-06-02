@@ -8,12 +8,42 @@
   <title>Backbone Boilerplate</title>
 
   <!-- Application styles -->
-  <link rel="stylesheet" href="/assets/css/index.css">
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/youfood.css">
 </head>
 
 <body>
+ <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">YouFood</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active">
+                <a href="./index.html">Accueil</a>
+              </li>
+              <li class="">
+                <a href="./factures.html">Factures</a>
+              </li>
+              <li class="">
+                <a href="./statistiques.html">Statistiques</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   <!-- Main container -->
-  <div role="main" id="main"></div>
+  <div class="clear"></div>
+
+  <div class="content">
+
+  </div>
 
   <!-- Application source -->
   <script data-main="/app/config" src="/assets/js/libs/require.js"></script>

@@ -6,10 +6,10 @@ require([
   "use!backbone",
 
   // Modules
-  "modules/YouFood"
+  "modules/Accueil"
 ],
 
-function(namespace, $, Backbone, YouFood) {
+function(namespace, $, Backbone, Accueil) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -20,7 +20,7 @@ function(namespace, $, Backbone, YouFood) {
 
     index: function(hash) {
       var route = this;
-      var tutorial = new YouFood.Views.Accueil();
+      var tutorial = new Accueil.Views.Accueil();
 
       // Attach the tutorial to the DOM
       tutorial.render(function(el) {
