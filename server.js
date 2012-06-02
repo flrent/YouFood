@@ -1,19 +1,13 @@
 var url = require('url');
-var express = require('express');
-var app = express.createServer();
+var app = require('express').createServer();
 console.log("serveur started");
 var mongo = require('mongodb'),
   Server = mongo.Server,
   Db = mongo.Db,
   ObjectId = mongo.ObjectID;
-
-
 app.use(require('express').bodyParser());
 app.enable("jsonp callback");
 
-app.configure(function(){
-  app.use(express.static(__dirname + '/public'));
-});
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 var db = new Db('projectDB', server);
 
@@ -22,13 +16,17 @@ db.open(function(err, db) {
     console.log("We are connected");
   }
 });
-
+	
+app.get('/', function(req, res){
+	console.log("serveur /");
+  res.send('hello world');
+});
 
 app.get('/GetMenus', function(req, res){
 	var menus = db.collection('menus', function(err, menuCollection){
 		menuCollection.find({}).toArray(function(err, docs){
 			console.log(docs);
-			res.json(docs);
+			res.send(docs);
 		});
 	});	
 });
@@ -151,26 +149,50 @@ app.get('PurgeDishes', function(req, res){
 	});
 });
 
-app.post('/CreateOrder', function(req, res){
-  res.header("Access-Control-Allow-Origin", "*"); 
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-	console.log(req.body);
-	db.createCollection('orders', function(err, collection) {
-		var doc1 = req.body["order"];
-		collection.insert(doc1);
-		//res.json(doc1);
-		res.json({toto:1})
-	});		
+app.get('/GetOrders', function(req, res){
+	
 });
 
+app.post('/CreateOrder', function(req, res){
+	db.createCollection('orders', function(err, collection) {
+		var doc1 = req.body["orderObject"];
+		collection.insert(doc1);
+		res.send(doc1);
+	});
+});
 
-app.get('/', function(req, res){
-	res.render('./../public/index.html');
+app.post('/SetOrderWaiting', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":0}}, function(err, orderDoc){
+			res.send(orderDoc);
+	}); 
 });
 
 app.post('/SetOrderInProgress', function(req, res){
 	var idOrder = req.body["idOrder"];
-	var order = db.collection("")
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":1}}, function(err, orderDoc){
+			res.send(orderDoc);
+	});
 });
+
+app.post('/SetOrderReady', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":2}}, function(err, orderDoc){
+			res.send(orderDoc);
+	});
+});
+
+app.post('/SetOrderDelivered', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":3}}, function(err, orderDoc){
+			res.send(orderDoc);
+	});
+});
+
+
 
 app.listen(3000);
