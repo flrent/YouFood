@@ -1,24 +1,47 @@
-var url = require('url');
-var app = require('express').createServer();
-console.log("serveur started");
-var mongo = require('mongodb'),
-  Server = mongo.Server,
-  Db = mongo.Db,
-  ObjectId = mongo.ObjectID;
-app.use(require('express').bodyParser());
-app.enable("jsonp callback");
+var logNow = function(texte) { console.log(new Date()+" - "+ texte);};
+logNow("---------------------------------------------------------------");
+logNow("YouFood v1. Authors: @flrent, @MakanWG");
+logNow("---------------------------------------------------------------");
+logNow("Initialisation du serveur node.js réussie.");
 
+/* modules */
+var url = require('url'),
+	express = require('express'),
+	mongo = require('mongodb');
+/* --------- */
+
+/* init */
+var app = express.createServer(),
+	Server = mongo.Server,
+  	Db = mongo.Db,
+  	ObjectId = mongo.ObjectID;
+
+app.use(require('express').bodyParser());
+
+app.configure(function(){
+  app.use(express.static(__dirname + '/public'));
+});
+
+/* bdd */
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 var db = new Db('projectDB', server);
 
 db.open(function(err, db) {
   if(!err) {
-    console.log("We are connected");
+    logNow("Connexion à la base de données Mongo réussie.");
   }
 });
+/* --------- */
+
+
+
+
+
+
+/* routes */
 app.get('/', function(req, res){
-	console.log("serveur /");
-  res.send('hello world');
+	logNow("Application mobile initialisée.");
+ 	res.render('./public/index.html');
 });
 
 app.get('/GetMenus', function(req, res){
