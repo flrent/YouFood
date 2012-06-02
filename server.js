@@ -2,7 +2,7 @@ var logNow = function(texte) { console.log(new Date()+" - "+ texte);};
 logNow("---------------------------------------------------------------");
 logNow("YouFood v1. Authors: @flrent, @MakanWG");
 logNow("---------------------------------------------------------------");
-logNow("Initialisation du serveur node.js réussie.");
+logNow("Initialisation du serveur "+__dirname+" réussie.");
 
 /* modules */
 var url = require('url'),
@@ -190,8 +190,6 @@ app.post('/CreateOrder', function(req, res){
 			res.send(orderDoc);
 	}); 
 });*/
-
-
 
 
 app.listen(3000);
