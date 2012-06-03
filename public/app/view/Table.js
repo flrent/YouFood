@@ -51,10 +51,10 @@ Ext.define('YouFood.view.Table', {
 			 			xtype:'tabledataview',
 			 			store:{
 			 				autoLoad:true,
-			 				fields:['nom','type','desc','photo'],
+			 				fields:['nom','prix','desc','photo'],
 			 				proxy: {
 			 					type:'ajax',
-			 					url:'table.json',
+			 					url:'/GetDishes',
 			 					reader: {
 			 						type:"json",
 			 						rootProperty:'table'

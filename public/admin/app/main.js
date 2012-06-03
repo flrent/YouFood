@@ -15,8 +15,7 @@ function(namespace, $, Backbone, Accueil) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      ":hash":"index",
-      "/carte":"carte"
+      ":hash":"index"
     },
 
     index: function(hash) {
@@ -25,25 +24,6 @@ function(namespace, $, Backbone, Accueil) {
 
       // Attach the accueil to the DOM
       accueil.render(function(el) {
-        $("#main").html(el);
-
-        // Fix for hashes in pushState and hash fragment
-        if (hash && !route._alreadyTriggered) {
-          // Reset to home, pushState support automatically converts hashes
-          Backbone.history.navigate("", false);
-
-          // Trigger the default browser behavior
-          location.hash = hash;
-
-          // Set an internal flag to stop recursive looping
-          route._alreadyTriggered = true;
-        }
-      });
-    },
-    carte: function(hash) {
-      var carte = new Carte.Views.CarteContainer();
-
-      carte.render(function(el) {
         $("#main").html(el);
 
         // Fix for hashes in pushState and hash fragment
