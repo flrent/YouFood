@@ -19,7 +19,9 @@ function(namespace, $, Backbone, Accueil, Carte) {
       "index": "index",
       "carte":"carte",
       "/getDishes":"getDishes",
-      "/RemoveDish/:id":'removeDish'
+      "/RemoveDish/:id":'removeDish',
+      "/EditDish/:id":'editDish',
+      "/RemoveMenu/:id":'removeMenu'
     },
     initialize: function() {
       this.index();
@@ -50,12 +52,19 @@ function(namespace, $, Backbone, Accueil, Carte) {
     },
     getDishes: function(message) {
       if(message) {
-        new Carte.Views.GestionProduits().render(message);
+        new Carte.Views.GestionProduits().render(false, message);
       }
       else {
         new Carte.Views.GestionProduits().render();
       }
-      
+    },
+    getMenus: function(message) {
+      if(message) {
+        new Carte.Views.GestionMenus().render(false, message);
+      }
+      else {
+        new Carte.Views.GestionMenus().render();
+      }
     },
     removeDish: function(id) {
       var that = this;
@@ -66,7 +75,33 @@ function(namespace, $, Backbone, Accueil, Carte) {
           that.getDishes("Suppression réussie.");
         }
       });
-    }
+    },
+    editDish: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/GetDish/'+id,
+        success: function(retour) {
+            new Carte.Views.GestionProduitsAjouter().render(false, {
+              nom:retour.nom,
+              photo:retour.photo,
+              _id:retour._id,
+              desc:retour.desc,
+              prix:retour.prix  
+            });
+        }
+      });      
+    },
+    removeMenu: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/RemoveMenu/'+id,
+        success: function(retour) {
+          that.getMenus("Suppression réussie.");
+        }
+      });
+    },
   });
 
   // Shorthand the application namespace

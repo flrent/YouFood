@@ -2,27 +2,28 @@
 <form class="form-horizontal">
 <fieldset>
   <div class="control-group">
+    <input type="hidden" class="input-xlarge" id="addProduitId" value="" />
     <label class="control-label" for="addProduitNom">Nom</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitNom">
+      <input type="text" class="input-xlarge" id="addProduitNom" value="<%= nom %>" />
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="addProduitDesc">Description</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitDesc">
+      <input type="text" class="input-xlarge" id="addProduitDesc" value="<%= desc %>">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="addProduitPhoto">Photo</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitPhoto">
+      <input type="text" class="input-xlarge" id="addProduitPhoto" value="<%= photo %>">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="addProduitPrix">Prix</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitPrix">
+      <input type="text" class="input-xlarge" id="addProduitPrix" value="<%= prix %>">
     </div>
   </div>
   <div class="form-actions">

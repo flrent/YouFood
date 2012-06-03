@@ -45,6 +45,7 @@ function(namespace, Backbone) {
         email:$("#loginEmail").val(),
         pass:$("#loginPassword").val()
       };
+      this.isLogged=true;
       Backbone.history.navigate("carte", true);
 
     }
