@@ -34,7 +34,7 @@ db.open(function(err, db) {
     logNow("Erreur de connexion. Mongod est il lancé ? "+err);  	
   }
 });
-/* --------- */
+/* ---------- */
 
 
 
@@ -45,6 +45,31 @@ db.open(function(err, db) {
 app.get('/', function(req, res){
 	logNow("Application mobile initialisée.");
  	res.render('./public/index.html');
+});
+
+app.post("/CreateRestaurantInfos", function(req, res){
+	var infos = req.body.infos;
+	db.createCollection('restaurants_infos',  function(err, collection) {
+		collection.insert(infos, {safe:true}, function(err, doc){
+			if(!err){
+				console.log(doc1);
+				res.send(doc1);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to create a restaurant infos");
+			}	
+		});
+	});	
+});
+
+app.get("/GetRestaurantInfos", function(req, res){
+	var infos = db.collection("restaurants_infos", function(err, collection){
+		collection.find({}).toArray(function(err, docs){
+			console.log(docs);
+			res.send(docs);
+		});
+	});
 });
 
 app.get('/GetMenus', function(req, res){
@@ -69,18 +94,31 @@ app.get('/GetMenu/:id', function(req, res){
 app.get('/RemoveMenu/:id', function(req, res){
 	var id = req.params.id;
 	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.findAndRemove({_id:new ObjectId(id)}, function(err, doc){
-			res.send("removed");
+		menuCollection.findAndRemove({_id:new ObjectId(id)}, {safe:true}, function(err, doc){
+			if(!err){
+				res.send("Menu successfully removed");
+			}
+			else{
+				console.log(err);
+				res.send(err);
+			}	
 		})
 	});
 });
 
 app.post('/CreateMenu', function(req, res){
-	console.log(req.body.menu);
-	db.createCollection('menus', function(err, collection) {
+	db.createCollection('menus',  function(err, collection) {
 		var doc1 = req.body.menu;
-		collection.insert(doc1);
-		res.send(doc1);
+		collection.insert(doc1, {safe:true}, function(err, doc){
+			if(!err){
+				console.log(doc1);
+				res.send(doc1);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to create a menu");
+			}	
+		});
 	});		
 });
 
@@ -119,15 +157,22 @@ app.get('/RemoveDish/:id', function(req, res){
 		menuCollection.findAndRemove({_id:new ObjectId(id)}, function(err, doc){
 			res.send("removed");
 		});
-	})
+	});
 });
 
 app.post('/CreateDish', function(req, res){
 	console.log(req.body.dish);
 	db.createCollection('dishes', function(err, collection) {
 		var doc1 = req.body.dish;
-		collection.insert(doc1); 
-		res.send(doc1);
+		collection.insert(doc1, {safe:true}, function(err, doc){
+			if(!err){
+				res.send(doc1);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to create a dish.")
+			}	
+		}); 
 	});	
 });
 
@@ -175,7 +220,11 @@ app.get('PurgeDishes', function(req, res){
 });
 
 app.get('/GetOrders', function(req, res){
-	
+	var orders = db.collection("orders", function(err, ordersCollection){
+		ordersCollection.find().toArray(function(err, doc){
+			res.send(doc);
+		});
+	});
 });
 
 app.post('/CreateOrder', function(req, res){
@@ -221,6 +270,5 @@ app.post('/SetOrderDelivered', function(req, res){
 		});
 	});
 });
-
 
 app.listen(3000);
