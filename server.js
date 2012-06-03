@@ -271,4 +271,27 @@ app.post('/SetOrderDelivered', function(req, res){
 	});
 });
 
+app.get('/GetWaiters', function(req, res){
+	var waiters = db.collection("waiters", function(err, collection){
+		collection.find({}).toArray(function(err, doc){
+			res.send(doc);
+		});
+	});
+});
+
+app.post('/CreateWaiter', function(req, res){
+	var waiter = req.body.waiter;
+	db.createCollection("waiters", function(err, collection){
+		collection.insert(waiter, {safe:true}, function(err, doc){
+			if(!err){
+				res.send(waiter);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to create a new waiter");
+			}
+		})
+	});
+});
+
 app.listen(3000);
