@@ -31,7 +31,7 @@ db.open(function(err, db) {
     logNow("Connexion à la base de données Mongo réussie.");
   }
 });
-/* --------- */
+/* ---------- */
 
 
 
