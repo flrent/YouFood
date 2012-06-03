@@ -183,13 +183,41 @@ app.post('/CreateOrder', function(req, res){
 	});
 });
 
-/*app.post('/SetOrderWaiting', function(req, res){
+app.post('/SetOrderWaiting', function(req, res){
 	var idOrder = req.body["idOrder"];
 	var orders = db.collection("orders", function(err, collection){
 		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":0}}, function(err, orderDoc){
 			res.send(orderDoc);
-	}); 
-});*/
+		}); 
+	});
+});
+
+app.post('/SetOrderInProgress', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":1}}, function(err, orderDoc){
+			res.send(orderDoc);
+		});
+	});
+});
+
+app.post('/SetOrderReady', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":2}}, function(err, orderDoc){
+			res.send(orderDoc);
+		});
+	});
+});
+
+app.post('/SetOrderDelivered', function(req, res){
+	var idOrder = req.body["idOrder"];
+	var orders = db.collection("orders", function(err, collection){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":3}}, function(err, orderDoc){
+			res.send(orderDoc);
+		});
+	});
+});
 
 
 app.listen(3000);
