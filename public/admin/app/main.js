@@ -6,11 +6,10 @@ require([
   "use!backbone",
 
   // Modules
-  "modules/Accueil",
-  "modules/Carte"
+  "modules/Accueil"
 ],
 
-function(namespace, $, Backbone, Accueil, Carte) {
+function(namespace, $, Backbone, Accueil) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({

@@ -12,7 +12,7 @@ require.config({
     jquery: "../assets/js/libs/jquery",
     underscore: "../assets/js/libs/lodash",
     backbone: "../assets/js/libs/backbone",
-
+    bootstrap: "..assets/js/libs/bootstrap-modal",
     // Shim Plugin
     use: "../assets/js/plugins/use"
   },
