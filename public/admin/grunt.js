@@ -100,7 +100,7 @@ module.exports = function(grunt) {
         // These two options make it easier for deploying, by using whatever
         // PORT is available in the environment and defaulting to any IP.
         host: "0.0.0.0",
-        port: process.env.PORT || 8000,
+        port: process.env.PORT || 3000,
 
         files: { "favicon.ico": "favicon.ico" },
 
