@@ -65,10 +65,12 @@ function(namespace, Backbone) {
   Accueil.Views.GestionProduits = Backbone.View.extend({
     template: urlTpls+"gestioncarte/produits.html",
     el:'.gestionContainer',
+    el2:'#tableProduits',
+    el3:'.formAjout',
     events:{
       'click #ajouterProduit':'ajouter'
     },
-    render: function(done) {
+    render: function(done, message) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -78,6 +80,26 @@ function(namespace, Backbone) {
         if (_.isFunction(done)) {
           done(view.el);
         }
+        if(message) $(view.el3).html($('<div class="alert alert-success">'+message+'</div>'));
+
+          view.fetch();
+      });
+    },
+    fetch: function() {
+      var that = this;
+
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/GetDishes',
+        success: function(retour) {
+          var html = "<thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th></tr></thead><tbody>";
+          _.each(retour, function(obj){ 
+            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.prix+"</td></tr>";
+          });
+          html+="</tbody>";
+          $(that.el2).html($(html));
+        },
+        dataType: 'json'
       });
     },
     ajouter: function(event) {
@@ -126,7 +148,7 @@ function(namespace, Backbone) {
           success: function(retour) {
             console.log(retour);
             that.isGone=false;
-            $(that.el).html($('<div class="alert alert-success">'+JSON.stringify(retour)+'</div>'));
+            new Accueil.Views.GestionProduits().render(false, 'Le produit "'+retour.nom+'"a bien été ajouté. ');
           },
           dataType: 'json'
         });
@@ -144,7 +166,7 @@ function(namespace, Backbone) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
+        view.el.innerHTML = tmpl({texte:'coucou'});
 
         // If a done function is passed, call it with the element
         if (_.isFunction(done)) {

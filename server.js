@@ -30,6 +30,9 @@ db.open(function(err, db) {
   if(!err) {
     logNow("Connexion à la base de données Mongo réussie.");
   }
+  else {
+    logNow("Erreur de connexion. Mongod est il lancé ? "+err);  	
+  }
 });
 /* --------- */
 
