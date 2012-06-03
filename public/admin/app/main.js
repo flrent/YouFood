@@ -15,10 +15,13 @@ function(namespace, $, Backbone, Accueil) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      ":hash":"index"
+      ":hash":"index",
+      "getDishes":"getDishes",
+      "/RemoveDish/:id":'removeDish'
     },
 
     index: function(hash) {
+      console.log(hash);
       var route = this;
       var accueil = new Accueil.Views.Accueil();
 
@@ -36,6 +39,19 @@ function(namespace, $, Backbone, Accueil) {
 
           // Set an internal flag to stop recursive looping
           route._alreadyTriggered = true;
+        }
+      });
+    },
+    getDishes: function() {
+      new Accueil.Views.GestionProduits().render();
+    },
+    removeDish: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/RemoveDish/'+id,
+        success: function(retour) {
+          that.getDishes();
         }
       });
     }

@@ -92,9 +92,9 @@ function(namespace, Backbone) {
         type: 'GET',
         url: 'http://localhost:3000/GetDishes',
         success: function(retour) {
-          var html = "<thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th></tr></thead><tbody>";
+          var html = "<thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.prix+"</td></tr>";
+            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.prix+"</td><td>"+'<a class="btn" href="#"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveDish/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
