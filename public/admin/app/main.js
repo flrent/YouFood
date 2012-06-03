@@ -6,22 +6,25 @@ require([
   "use!backbone",
 
   // Modules
-  "modules/Accueil"
+  "modules/Accueil",
+  "modules/Carte"
 ],
 
-function(namespace, $, Backbone, Accueil) {
+function(namespace, $, Backbone, Accueil, Carte) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      ":hash":"index",
-      "getDishes":"getDishes",
+      "index": "index",
+      "carte":"carte",
+      "/getDishes":"getDishes",
       "/RemoveDish/:id":'removeDish'
     },
-
+    initialize: function() {
+      this.index();
+    },
     index: function(hash) {
-      console.log(hash);
       var route = this;
       var accueil = new Accueil.Views.Accueil();
 
@@ -42,8 +45,17 @@ function(namespace, $, Backbone, Accueil) {
         }
       });
     },
-    getDishes: function() {
-      new Accueil.Views.GestionProduits().render();
+    carte: function() {
+      new Carte.Views.Accueil().render();
+    },
+    getDishes: function(message) {
+      if(message) {
+        new Carte.Views.GestionProduits().render(message);
+      }
+      else {
+        new Carte.Views.GestionProduits().render();
+      }
+      
     },
     removeDish: function(id) {
       var that = this;
@@ -51,7 +63,7 @@ function(namespace, $, Backbone, Accueil) {
         type: 'GET',
         url: 'http://localhost:3000/RemoveDish/'+id,
         success: function(retour) {
-          that.getDishes();
+          that.getDishes("Suppression réussie.");
         }
       });
     }
