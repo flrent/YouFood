@@ -43,16 +43,20 @@ function(namespace, Backbone) {
       });
     },
     manageLi: function(event) {
+      event.preventDefault();
       $("#navGestion li").removeClass("active");
       $(event.target).parent("li").addClass("active");
     },
     showGestionTextes: function(event) {
+      event.preventDefault();
       new Accueil.Views.GestionTextes().render();
     },
     showGestionProduits: function(event) {
+      event.preventDefault();
       new Accueil.Views.GestionProduits().render();
     },
     showGestionCartes: function(event) {
+      event.preventDefault();
       new Accueil.Views.GestionCartes().render();
     }
   });
@@ -87,6 +91,7 @@ function(namespace, Backbone) {
     events:{
       'click #addProduitSubmit':'valider'
     },
+    isGone:false,
     render: function(done) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
@@ -100,26 +105,32 @@ function(namespace, Backbone) {
       });
     },
     valider: function(event){
-      event.preventDefault();
+      var that = this;
 
-      var produit = {
-        dish: {
-          nom:$("#addProduitNom").val().trim(),
-          desc:$("#addProduitDesc").val().trim(),
-          photo:$("#addProduitPhoto").val().trim(),
-          prix:$("#addProduitPrix").val().trim() 
-        }
-      };
+      if(!this.isGone) {
+        this.isGone=true;
+        var produit = {
+          dish: {
+            nom:$("#addProduitNom").val().trim(),
+            desc:$("#addProduitDesc").val().trim(),
+            //photo:$("#addProduitPhoto").val().trim(),
+            photo:'http://media.paperblog.fr/i/323/3231250/32-bons-petits-plats-coupe-monde-13-L-8.jpeg',
+            prix:$("#addProduitPrix").val().trim() 
+          }
+        };
 
-      $.ajax({
-        type: 'POST',
-        url: 'http://localhost:3000/CreateDish',
-        data: produit,
-        success: function(retour) {
-          console.log(retour);
-        },
-        dataType: 'json'
-      });
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:3000/CreateDish',
+          data: produit,
+          success: function(retour) {
+            console.log(retour);
+            that.isGone=false;
+            $(that.el).html($('<div class="alert alert-success">'+JSON.stringify(retour)+'</div>'));
+          },
+          dataType: 'json'
+        });
+      }
     }
   });
 
