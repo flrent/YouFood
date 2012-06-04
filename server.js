@@ -14,7 +14,8 @@ var url = require('url'),
 var app = express.createServer(),
 	Server = mongo.Server,
   	Db = mongo.Db,
-  	ObjectId = mongo.ObjectID;
+  	ObjectId = mongo.ObjectID,
+  	DBref = mongo.DBRef;
 
 app.use(require('express').bodyParser());
 
@@ -144,9 +145,13 @@ app.get('/GetDish/:id', function(req, res){
 app.get('/GetMenuDishes/:id', function(req, res){
 	var id = req.params.id;
 	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.findOne({_id:new ObjectId(id)}, {fields:{"dishes":1}}).toArray(function(err, doc){
-			console.log(doc);
-			res.send(doc);
+		menuCollection.findOne({_id:new ObjectId(id)}, {fields:{"dishes":1}}, function(err, doc){
+			db.collection("dishes", function(err, dishesCollection){
+				dishesCollection.find({_id:{$in: doc.dishes}}).toArray(function(err, docs){
+					console.log(docs);
+					res.send(docs.dishes);
+				});
+			});
 		});
 	});
 });
@@ -179,15 +184,10 @@ app.post('/CreateDish', function(req, res){
 app.post('/AddDishToMenu', function(req, res){
 	var idMenu = req.body["idMenu"];
 	var idDish = req.body["idDish"];
-	var mydish = null;
-	var dish = db.collection('dishes', function(err, dishCollection){
-		dishCollection.findOne({_id:new ObjectId(idDish)}, function(err, doc){
-			mydish = doc;
-			var menu = db.collection('menus', function(err, menuCollection){
-				menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":mydish}}, function(err, menuDoc){
-					res.send(menuDoc);
-				});
-			});
+	var menu = db.collection('menus', function(err, menuCollection){
+		menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
+			console.log(menuDoc);
+			res.send(menuDoc);
 		});
 	});
 });
