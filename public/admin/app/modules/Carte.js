@@ -217,6 +217,7 @@ function(namespace, Backbone) {
     el:'.gestionContainer',
     el1:'.formAjout',
     el2:'#tableMenus',
+    el3:'#addMenuDishes',
     events:{
       'click #ajouterCarte':'ajouter'
     },
@@ -247,14 +248,14 @@ function(namespace, Backbone) {
         success: function(retour) {
           var html = "<thead><tr><th>#</th><th>Nom</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+'<a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
         },
         dataType: 'json'
       });
-    },
+    }
   });
 
   Carte.Views.GestionMenuAjouter = Backbone.View.extend({
@@ -263,11 +264,16 @@ function(namespace, Backbone) {
     events:{
       'click #addMenuSubmit':'ajouter'
     },
-    render: function(done) {
+    render: function(done, menu) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
+        if(menu) {
+          view.el.innerHTML = tmpl(menu);
+        }
+        else {
+          view.el.innerHTML = tmpl({nom:""});
+        }
 
         // If a done function is passed, call it with the element
         if (_.isFunction(done)) {
@@ -295,6 +301,42 @@ function(namespace, Backbone) {
         },
         dataType: 'json'
       });
+    }
+  });
+
+
+  Carte.Views.GestionMenuAjouterProduits = Backbone.View.extend({
+    template: urlTpls+"gestioncarte/ajouterproduitsmenu.html",
+    el:'.formAjout',
+    events:{
+      'click #addDishToMenu':'addDishToMenu'
+    },
+    render: function(done) {
+      var view = this;
+      // Fetch the template, render it to the View element and call done.
+      namespace.fetchTemplate(this.template, function(tmpl) {
+        view.el.innerHTML = tmpl();
+
+        // If a done function is passed, call it with the element
+        if (_.isFunction(done)) {
+          done(view.el);
+        }
+      });
+    },
+    addDishToMenu: function(event) {
+      event.preventDefault();
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:3000/CreateMenu',
+        data: menu,
+        success: function(retour) {
+          console.log(retour);
+          new Carte.Views.GestionMenus().render(false, 'Le menu "'+retour.nom+'"a bien été ajouté. ');
+        },
+        dataType: 'json'
+      });
+
     }
   });
 

@@ -21,7 +21,8 @@ function(namespace, $, Backbone, Accueil, Carte) {
       "/getDishes":"getDishes",
       "/RemoveDish/:id":'removeDish',
       "/EditDish/:id":'editDish',
-      "/RemoveMenu/:id":'removeMenu'
+      "/RemoveMenu/:id":'removeMenu',
+      "/EditMenu/:id":'editMenu'
     },
     initialize: function() {
       this.index();
@@ -88,6 +89,18 @@ function(namespace, $, Backbone, Accueil, Carte) {
               _id:retour._id,
               desc:retour.desc,
               prix:retour.prix  
+            });
+        }
+      });      
+    },
+    editMenu: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/GetMenu/'+id,
+        success: function(retour) {
+            new Carte.Views.GestionMenuAjouter().render(false, {
+              nom:retour.nom
             });
         }
       });      
