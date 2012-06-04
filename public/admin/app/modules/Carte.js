@@ -26,7 +26,8 @@ function(namespace, Backbone) {
       'click #navGestion li':'manageLi',
       'click #gestionTextes':'showGestionTextes',
       'click #gestionProduits':'showGestionProduits',
-      'click #gestionMenu':'showGestionMenus'
+      'click #gestionMenu':'showGestionMenus',
+      'click #gestionCompositionL':'showGestionCompositionMenus'
     },
     el:'.content',
     render: function(done) {
@@ -62,6 +63,12 @@ function(namespace, Backbone) {
     showGestionMenus: function(event) {
       event.preventDefault();
       new Carte.Views.GestionMenus().render();
+      event.stopPropagation();
+      this.manageLi(event);
+    },
+    showGestionCompositionMenus: function(event) {
+      event.preventDefault();
+      new Carte.Views.GestionCompositionMenus().render();
       event.stopPropagation();
       this.manageLi(event);
     }
@@ -117,9 +124,14 @@ function(namespace, Backbone) {
     template: urlTpls+"gestioncarte/ajouterproduit.html",
     el:'.formAjout',
     events:{
-      'click #addProduitSubmit':'valider'
+      'click #addProduitSubmit':'valider',
+      'click #cancelProduit':'cancelProduit'
     },
     isGone:false,
+    cancelProduit: function(event) {
+      event.preventDefault();
+      new Carte.Views.GestionProduits().render();
+    },
     render: function(done, produit) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
@@ -262,7 +274,8 @@ function(namespace, Backbone) {
     template: urlTpls+"gestioncarte/ajoutermenu.html",
     el:'.formAjout',
     events:{
-      'click #addMenuSubmit':'ajouter'
+      'click #addMenuSubmit':'ajouter',
+      'click #cancelMenu':'cancelMenu'
     },
     render: function(done, menu) {
       var view = this;
@@ -280,6 +293,10 @@ function(namespace, Backbone) {
           done(view.el);
         }
       });
+    },
+    cancelMenu: function(event) {
+      event.preventDefault();
+      new Carte.Views.GestionMenus().render();
     },
     ajouter: function(event){
       event.preventDefault();
@@ -305,12 +322,10 @@ function(namespace, Backbone) {
   });
 
 
-  Carte.Views.GestionMenuAjouterProduits = Backbone.View.extend({
-    template: urlTpls+"gestioncarte/ajouterproduitsmenu.html",
-    el:'.formAjout',
-    events:{
-      'click #addDishToMenu':'addDishToMenu'
-    },
+
+  Carte.Views.GestionCompositionMenus = Backbone.View.extend({
+    template: urlTpls+"gestioncarte/composition.html",
+    el:'.gestionContainer',
     render: function(done) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
@@ -321,24 +336,44 @@ function(namespace, Backbone) {
         if (_.isFunction(done)) {
           done(view.el);
         }
+        view.getMenus();
       });
     },
-    addDishToMenu: function(event) {
-      event.preventDefault();
-
+    getMenus: function() {
+      var view = this;
       $.ajax({
-        type: 'POST',
-        url: 'http://localhost:3000/CreateMenu',
-        data: menu,
-        success: function(retour) {
-          console.log(retour);
-          new Carte.Views.GestionMenus().render(false, 'Le menu "'+retour.nom+'"a bien été ajouté. ');
+        type: 'GET',
+        url: 'http://localhost:3000/GetDishes',
+        success: function(dishes) {
+          var options="";
+          _.each(dishes, function(p) {
+            options+='<option value="'+p._id+'">'+p.nom+"</option>";
+          });
+          $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/GetMenus',
+            success: function(menus) {
+              var html = '';
+              _.each(menus, function(m) {
+                html+="<h2>"+m.nom+"</h2>";
+                html+='<select id="select'+m._id+'">'+options+'</select>';
+                html+='<button class="btn">Ajouter ce produit au menu</button>';
+              });
+              html+='';
+              $("#compositionMenus").html(html);
+            },
+            dataType: 'json'
+          });
         },
         dataType: 'json'
       });
-
     }
   });
+
+
+
+
+
 
   // Required, return the module for AMD compliance
   return Carte;
