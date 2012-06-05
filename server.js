@@ -68,9 +68,9 @@ app.post("/UpdateRestaurantInfos", function(req, res){
 	var infos = req.body.infos;
 	var id = infos.id;
 	db.collection("restaurant_infos", function(err, collection){
-		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:infos.name, desc:infos.desc}}, function(err, doc){
+		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:infos.name, desc:infos.desc, img:infos.img}}, function(err, doc){
 			if(!err){
-				res.send(doc);
+				res.send(infos);
 			}
 			else{
 				console.log(err);
@@ -138,6 +138,22 @@ app.post('/CreateMenu', function(req, res){
 	});		
 });
 
+app.post('/UpdateMenu', function(req, res){
+	var menu = req.body.menu;
+	var id = menu.id;
+	db.collection("menus", function(err, collection){
+		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name}}, function(err, doc){
+			if(!err){
+				res.send(menu);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to update the menu");
+			}
+		});
+	});
+});
+
 app.get('/GetDishes', function(req, res){
 	var dishes = db.collection('dishes', function(err, dishCollection){
 		dishCollection.find().toArray(function(err, docs){
@@ -200,7 +216,7 @@ app.post('/UpdateDish', function(req, res){
 	var dish = req.body.dish;
 	var id = dish.id;
 	db.collection("dishes", function(err, collection){
-		collection.findAndModify({_id:new ObjectId(id)}, {$set:{nom:dish.name, prix:dish.price}}, {new:true, safe:true}, function(err, doc){
+		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:dish.name, price:dish.price, desc:dish.desc, img:dish.img}}, function(err, doc){
 			if(!err){
 				res.send(doc);
 			}
@@ -310,6 +326,21 @@ app.get('/GetWaiters', function(req, res){
 	});
 });
 
+app.get('/RemoveWaiter:idWaiter', function(req, res){
+	var id = req.params.idWaiter;
+	var waiters = db.collection("waiters", function(err, collection){
+		collection.findAndRemove({_id:new ObjectId(id)}, {safe:true}, function(err, doc){
+			if(!err){
+				res.send("removed");
+			}
+			else{
+				console.log(err);
+				res.send("Failed to remove a waiter");
+			}
+		});
+	});
+});
+
 app.post('/CreateWaiter', function(req, res){
 	var waiter = req.body.waiter;
 	db.createCollection("waiters", function(err, collection){
@@ -324,5 +355,22 @@ app.post('/CreateWaiter', function(req, res){
 		});
 	});
 });
+
+app.post('/UpdateWaiter', function(req, res){
+	var waiter = req.body.waiter;
+	var id = waiter.id;
+	var waiters = db.collection("waiters", function(err, collection){
+		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:waiter.name, av:waiter.availability}}, function(err, doc){
+			if(!err){
+				res.send(waiter);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to update a waiter's informations.");
+			}
+		});
+	});	
+});
+
 
 app.listen(3000);
