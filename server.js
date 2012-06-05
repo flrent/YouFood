@@ -64,12 +64,27 @@ app.post("/CreateRestaurantInfos", function(req, res){
 	});	
 });
 
-app.get("/GetRestaurantInfos", function(req, res){
-	var infos = db.collection("restaurants_infos", function(err, collection){
-		collection.find({}).toArray(function(err, docs){
-			console.log(docs);
-			res.send(docs);
+app.post("/UpdateRestaurantInfos", function(req, res){
+	var infos = req.body.infos;
+	var id = infos.id;
+	db.collection("restaurant_infos", function(err, collection){
+		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:infos.name, desc:infos.desc}}, function(err, doc){
+			if(!err){
+				res.send(doc);
+			}
+			else{
+				console.log(err);
+				res.send("Failed to update the restaurant infos");
+			}
 		});
+	});
+});
+
+app.get("/GetRestaurantInfos", function(req, res){
+	var infos = db.collection("restaurant_infos", function(err, collection){
+		collection.find({}).toArray(function(err, docs){
+			res.send(docs[0]);
+		})
 	});
 });
 
@@ -175,10 +190,26 @@ app.post('/CreateDish', function(req, res){
 			}
 			else{
 				console.log(err);
-				res.send("Failed to create a dish.")
+				res.send("Failed to create a dish.");
 			}	
 		}); 
 	});	
+});
+
+app.post('/UpdateDish', function(req, res){
+	var dish = req.body.dish;
+	var id = dish.id;
+	db.collection("dishes", function(err, collection){
+		collection.findAndModify({_id:new ObjectId(id)}, {$set:{nom:dish.name, prix:dish.price}}, {new:true, safe:true}, function(err, doc){
+			if(!err){
+				res.send(doc);
+			}
+			else{
+				console.log("unable to update a dish");
+				console.log(err);
+			}
+		});
+	});
 });
 
 app.post('/AddDishToMenu', function(req, res){
@@ -211,7 +242,7 @@ app.get('/PurgeMenus', function(req, res){
 	});
 });
 
-app.get('PurgeDishes', function(req, res){
+app.get('/PurgeDishes', function(req, res){
 	var dishes = db.collection("dishes", function(err, dishesCollection){
 		dishesCollection.remove(function(err, doc){
 			res.send("removed");
@@ -290,7 +321,7 @@ app.post('/CreateWaiter', function(req, res){
 				console.log(err);
 				res.send("Failed to create a new waiter");
 			}
-		})
+		});
 	});
 });
 
