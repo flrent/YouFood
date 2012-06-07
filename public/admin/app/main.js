@@ -84,11 +84,11 @@ function(namespace, $, Backbone, Accueil, Carte) {
         url: 'http://localhost:3000/GetDish/'+id,
         success: function(retour) {
             new Carte.Views.GestionProduitsAjouter().render(false, {
-              nom:retour.nom,
-              photo:retour.photo,
+              name:retour.name,
+              img:retour.img,
               _id:retour._id,
               desc:retour.desc,
-              prix:retour.prix  
+              price:retour.price  
             });
         }
       });      

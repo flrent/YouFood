@@ -5,13 +5,13 @@
 	 * This is the name of your application, which is displayed on the device when the app is installed. On IOS, this should match
 	 * the name of your application in the Apple Provisioning Portal.
 	 */
-	"applicationName":"My Application",
+	"applicationName":"YouFood",
 
 	/**
 	 * @cfg {String} applicationId
 	 * This is the name namespace for your application. On IOS, this should match the name of your application in the Apple Provisioning Portal.
 	 */
-	"applicationId":"com.mycompany.myAppID",
+	"applicationId":"com.flxcreations.youfood",
 
 	/**
 	 * @cfg {String} versionString
@@ -63,7 +63,7 @@
 	 *  - Android
 	 *  - AndroidEmulator
 	 */
-	"platform":"iOSSimulator",
+	"platform":"iOS",
 
 	/**
 	 * @cfg {String} deviceType
@@ -77,7 +77,7 @@
 	 *  - iPad
 	 *  - Universal
 	 */
-	"deviceType":"Universal",
+	"deviceType":"iPad",
 
 	/**
 	 * @cfg {String} certificatePath
@@ -97,7 +97,7 @@
 	 *
 	 * When using a certificatePath on Windows, you do not need to specify this.
 	 */
-	"certificateAlias":"",
+	"certificateAlias":"iPhone Developer",
 	
 	/**
 	 * @cfg {String} sdkPath

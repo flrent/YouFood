@@ -26,7 +26,7 @@ Ext.define('YouFood.controller.Table', {
         }
     },
     callWaiter: function() {
-        Ext.Msg.alert('Serveur appelé', 'Merci, un serveur va venir vous voir dès que possible !' , Ext.emptyFn);
+        Ext.Msg.alert('Waiter called', 'Thank you, a waiter will come see you as soon as possible !' , Ext.emptyFn);
 /*
          Ext.data.JsonP.request({
             url: 'http://localhost:3000/',
@@ -56,9 +56,9 @@ Ext.define('YouFood.controller.Table', {
                 Ext.Msg.alert('Commande envoyée', text, Ext.emptyFn);
             }
         });*/
-        Ext.Msg.alert('Commande enregistrée', "Merci ! Votre commande a été envoyée aux cuisines, un serveur va venir vous l'apporter dès qu'elle sera prête.", Ext.emptyFn);
+        Ext.Msg.alert('Meal ordered', "Thank you ! Your meal has been successfully ordered. We will bring it to your as soon as it is ready.", Ext.emptyFn);
         this.getTablePanel().setCommandeStatus(1);
-        this.getButtonCommande().setText("Commande envoyée.");
+        this.getButtonCommande().setText("Meal ordered.");
         this.getButtonCommande().setDisabled(true);
         this.getButtonModifier().setDisabled(true);
         this.getButtonCommande().setUi("action");
@@ -66,13 +66,13 @@ Ext.define('YouFood.controller.Table', {
     modifier: function() {
         if(this.getTablePanel().getEditionMode()) {
             this.getTable().removeCls("edited");
-            this.getButtonModifier().setText("Modifier");
+            this.getButtonModifier().setText("Edit");
             this.getButtonModifier().setUi("");
             this.getTablePanel().setEditionMode(false);
         }
         else {
             this.getTable().addCls("edited");
-            this.getButtonModifier().setText("Terminer");
+            this.getButtonModifier().setText("Finish edition");
             this.getButtonModifier().setUi("action");
             this.getTablePanel().setEditionMode(true);
         }
@@ -81,8 +81,8 @@ Ext.define('YouFood.controller.Table', {
         if(this.getTablePanel().getEditionMode()) {
             var msg = new Ext.MessageBox();
             msg.show({
-               title: 'Liste de commande',
-               message: 'Êtes-vous sûr de vouloir supprimer "'+record.get("nom")+'" de votre liste de commande ?',
+               title: 'Meal List',
+               message: 'Are you sure you want to delete "'+record.get("nom")+'" from your meal list ?',
                width: 300,
                buttons: Ext.MessageBox.OKCANCEL,
                fn: function(buttonId) {

@@ -4,7 +4,7 @@ Ext.define('YouFood.view.Table', {
 	 id:'tablepanel',
 	 config: {
 	 	iconCls:'note2',
-		title:'Votre table',
+		title:'Your meal',
 		editionMode:false,
 		commandeStatus:0,
 	 	items: [
@@ -15,29 +15,27 @@ Ext.define('YouFood.view.Table', {
 			 		{
 		                flex:0.3,
 		                cls:'categorie_header',
-		                html:"<h3>Votre Table</h3>",
-		                style:'background:#c37e4c'
+		                html:"<h3>Votre Table</h3>"
 		            },
 			 		{
 			 			xtype:'toolbar',
-			 			docked:'bottom',
 			 			items:[
 				 			{
-				 				text:'Modifier',
+				 				text:'Edit',
 				 				id:'modifierCommande',
 				 				iconCls:'compose1',
 				 				iconMask:true,
 				 				docked:'left'
 				 			},
 				 			{
-				 				text:'Appeler un serveur',
+				 				text:'Call a waiter',
 				 				id:'appelerServeur',
 				 				iconCls:'user_business',
 				 				iconMask:true,
 				 				docked:'left'
 				 			},
 				 			{
-				 				text:'Valider votre commande',
+				 				text:'Order your meal',
 				 				docked:'right',
 				 				id:'validerCommande',
 				 				iconCls:'check_black2',

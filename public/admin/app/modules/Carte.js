@@ -31,6 +31,8 @@ function(namespace, Backbone) {
     },
     el:'.content',
     render: function(done) {
+      this.$el.empty();
+
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -80,10 +82,8 @@ function(namespace, Backbone) {
     el:'.gestionContainer',
     el2:'#tableProduits',
     el3:'.formAjout',
-    events:{
-      'click #ajouterProduit':'ajouter'
-    },
     render: function(done, message) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -95,6 +95,7 @@ function(namespace, Backbone) {
         }
         if(message) $(view.el3).html($('<div class="alert alert-success">'+message+'</div>'));
 
+        $("#ajouterProduit").bind("click", view.ajouter);
           view.fetch();
       });
     },
@@ -107,7 +108,7 @@ function(namespace, Backbone) {
         success: function(retour) {
           var html = "<thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.prix+"</td><td>"+'<a class="btn" href="#/EditDish/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveDish/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            html+="<tr><td>"+obj._id+"</td><td>"+obj.name+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.price+"</td><td>"+'<a class="btn" href="#/EditDish/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveDish/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
@@ -116,7 +117,10 @@ function(namespace, Backbone) {
       });
     },
     ajouter: function(event) {
-      new Carte.Views.GestionProduitsAjouter().render();
+      event.preventDefault();
+      event.stopPropagation();
+      $("#ajouterProduit").unbind("click");
+      new Carte.Views.GestionProduitsAjouter();
     }
   });
 
@@ -132,7 +136,11 @@ function(namespace, Backbone) {
       event.preventDefault();
       new Carte.Views.GestionProduits().render();
     },
+    initialize: function() {
+      this.render();
+    },
     render: function(done, produit) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -140,38 +148,48 @@ function(namespace, Backbone) {
           view.el.innerHTML = tmpl(produit);
         }
         else {
-          view.el.innerHTML = tmpl({nom:"",photo:"",_id:0,desc:"",prix:""});
+          view.el.innerHTML = tmpl({name:"",img:"",_id:0,desc:"",price:""});
         }
 
         // If a done function is passed, call it with the element
         if (_.isFunction(done)) {
           done(view.el);
+          $("#addProduitSubmit").bind("click", view.valider)
         }
       });
     },
     valider: function(event){
+      event.stopPropagation();
+
       var that = this;
 
       if(!this.isGone) {
         this.isGone=true;
         var produit = {
           dish: {
-            nom:$("#addProduitNom").val().trim(),
+            _id:$("#addProduitId").val().trim(),
+            name:$("#addProduitNom").val().trim(),
             desc:$("#addProduitDesc").val().trim(),
             //photo:$("#addProduitPhoto").val().trim(),
-            photo:'http://media.paperblog.fr/i/323/3231250/32-bons-petits-plats-coupe-monde-13-L-8.jpeg',
-            prix:$("#addProduitPrix").val().trim() 
+            img:'http://media.paperblog.fr/i/323/3231250/32-bons-petits-plats-coupe-monde-13-L-8.jpeg',
+            price:$("#addProduitPrix").val().trim() 
           }
         };
-
+        if(produit.dish._id==0) {
+          produit.dish._id=undefined;
+          var lien = 'CreateDish';
+        }
+        else {
+          var lien= 'UpdateDish';
+        }
         $.ajax({
           type: 'POST',
-          url: 'http://localhost:3000/CreateDish',
+          url: 'http://localhost:3000/'+lien,
           data: produit,
           success: function(retour) {
-            console.log(retour);
             that.isGone=false;
-            new Carte.Views.GestionProduits().render(false, 'Le produit "'+retour.nom+'"a bien été ajouté. ');
+            new Carte.Views.GestionProduits().render(false, 'Le produit "'+retour.name+'"a bien été ajouté. ');
+            $("#addProduitSubmit").unbind("click");
           },
           dataType: 'json'
         });
@@ -182,10 +200,8 @@ function(namespace, Backbone) {
   Carte.Views.GestionTextes = Backbone.View.extend({
     template: urlTpls+"gestioncarte/textes.html",
     el:'.gestionContainer',
-    events:{
-      'click #ajouterTexte':'ajouter'
-    },
     render: function(done) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -195,6 +211,7 @@ function(namespace, Backbone) {
         if (_.isFunction(done)) {
           done(view.el);
         }
+        $("#ajouterTexte").bind("click", view.ajouter);
       });
     },
     ajouter: function(event) {
@@ -211,6 +228,7 @@ function(namespace, Backbone) {
     template: urlTpls+"gestioncarte/ajoutertexte.html",
     el:'.formAjout',
     render: function(done) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -230,10 +248,8 @@ function(namespace, Backbone) {
     el1:'.formAjout',
     el2:'#tableMenus',
     el3:'#addMenuDishes',
-    events:{
-      'click #ajouterCarte':'ajouter'
-    },
     render: function(done, message) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -244,7 +260,7 @@ function(namespace, Backbone) {
           done(view.el);
         }
         if(message) $(view.el1).html($('<div class="alert alert-success">'+message+'</div>'));
-
+        $("#ajouterCarte").bind("click", view.ajouter);
         view.fetch();
       });
     },
@@ -260,7 +276,7 @@ function(namespace, Backbone) {
         success: function(retour) {
           var html = "<thead><tr><th>#</th><th>Nom</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj._id.slice(0,2)+"...</td><td>"+obj.nom+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            html+="<tr><td>"+obj._id+"...</td><td>"+obj.nom+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
@@ -278,6 +294,7 @@ function(namespace, Backbone) {
       'click #cancelMenu':'cancelMenu'
     },
     render: function(done, menu) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
@@ -327,6 +344,7 @@ function(namespace, Backbone) {
     template: urlTpls+"gestioncarte/composition.html",
     el:'.gestionContainer',
     render: function(done) {
+      this.$el.empty();
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {

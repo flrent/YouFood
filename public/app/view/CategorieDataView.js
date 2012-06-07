@@ -10,6 +10,7 @@ Ext.define('YouFood.view.CategorieDataView', {
 				'<img src="{photo}">',
 				'<h3>{nom}</h3>',
 				'<p>{desc}</p>',
+				'<p class="prix">{prix} $</p>',
 			'</div>'
 		],
 		styleHtmlContent:true
