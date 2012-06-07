@@ -170,8 +170,7 @@ function(namespace, Backbone) {
             _id:$("#addProduitId").val().trim(),
             name:$("#addProduitNom").val().trim(),
             desc:$("#addProduitDesc").val().trim(),
-            //photo:$("#addProduitPhoto").val().trim(),
-            img:'http://media.paperblog.fr/i/323/3231250/32-bons-petits-plats-coupe-monde-13-L-8.jpeg',
+            img:$("#addProduitPhoto").val().trim(),
             price:$("#addProduitPrix").val().trim() 
           }
         };

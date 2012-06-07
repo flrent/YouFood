@@ -26,14 +26,20 @@ Ext.define('YouFood.controller.Home', {
                 {
                     flex:0.3,
                     cls:'categorie_header',
-                    html:"<h3>"+record.get("nom")+"</h3>"
+                    html:"<h3>"+record.get("name")+"</h3>"
                 },
                 {
                     xtype:'categoriedataview',
                     store:{
-                        fields:['nom','type','desc','photo','prix'],
+                        fields:['name','desc','img','price'],
                         autoLoad:true,
-                        data:record.raw.items
+                        proxy: {
+                            type:'ajax',
+                            url:'/GetDishes',
+                            reader: {
+                                type:"json"
+                            }
+                        }
                     }
                 }
 
