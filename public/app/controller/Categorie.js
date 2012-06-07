@@ -21,10 +21,10 @@ Ext.define('YouFood.controller.Categorie', {
                 {
                     xtype:'produit',
                     data:{
-                        "nom":record.get("name"),
-                        "photo":record.get("img"),
+                        "name":record.get("name"),
+                        "img":record.get("img"),
                         "desc":record.get("desc"),
-                        "prix":record.get("price"),
+                        "price":record.get("price"),
                     }
                 }
             ]

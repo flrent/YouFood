@@ -22,7 +22,7 @@ Ext.define('YouFood.controller.Produit', {
         if(this.getTablePanel().getCommandeStatus()==0) {  
           msg.show({
              title: 'Your Meal',
-             message: 'Do you want to add to your list "'+produit.nom+'" ?',
+             message: 'Do you want to add to your list "'+produit.name+'" ?',
              width: 300,
              buttons: Ext.MessageBox.OKCANCEL,
              fn: function(buttonId) {

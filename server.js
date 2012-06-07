@@ -177,7 +177,8 @@ app.post('/CreateMenu', function(req, res){
 
 app.post('/UpdateMenu', function(req, res){
 	var menu = req.body.menu;
-	var id = menu.id;
+	var id = menu._id;
+	logNow("We are updating menu "+id+" : "+menu);
 	db.collection("menus", function(err, collection){
 		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name, active:menu.active}}, function(err, doc){
 			if(!err){

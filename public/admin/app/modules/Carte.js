@@ -104,7 +104,7 @@ function(namespace, Backbone) {
 
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/GetDishes',
+        url: '/GetDishes',
         success: function(retour) {
           var html = "<thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
@@ -177,17 +177,19 @@ function(namespace, Backbone) {
         if(produit.dish._id==0) {
           produit.dish._id=undefined;
           var lien = 'CreateDish';
+          var verbe=" ajouté";
         }
         else {
           var lien= 'UpdateDish';
+          var verbe ="modifié";
         }
         $.ajax({
           type: 'POST',
-          url: 'http://localhost:3000/'+lien,
+          url: '/'+lien,
           data: produit,
           success: function(retour) {
             that.isGone=false;
-            new Carte.Views.GestionProduits().render(false, 'Le produit "'+retour.name+'"a bien été ajouté. ');
+            new Carte.Views.GestionProduits().render(false, 'Le produit "'+retour.name+'"a bien été '+verbe+'. ');
             $("#addProduitSubmit").unbind("click");
           },
           dataType: 'json'
@@ -271,11 +273,11 @@ function(namespace, Backbone) {
 
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/GetMenus',
+        url: '/GetMenus',
         success: function(retour) {
           var html = "<thead><tr><th>#</th><th>Nom</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj._id+"...</td><td>"+obj.nom+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            html+="<tr><td>"+obj._id+"...</td><td>"+obj.name+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
@@ -301,7 +303,7 @@ function(namespace, Backbone) {
           view.el.innerHTML = tmpl(menu);
         }
         else {
-          view.el.innerHTML = tmpl({nom:""});
+          view.el.innerHTML = tmpl({name:"", _id:0});
         }
 
         // If a done function is passed, call it with the element
@@ -320,17 +322,29 @@ function(namespace, Backbone) {
 
       var menu = {
         menu: {
-          nom:$("#addMenuNom").val().trim()
+          _id:$("#addMenuId").val().trim(),
+          name:$("#addMenuNom").val().trim()
         }
       };
 
+      if(menu.menu._id==0) {
+        menu.menu._id=undefined;
+        var lien = 'CreateMenu';
+        var verbe=" ajouté";
+      }
+      else {
+        var lien= 'UpdateMenu';
+        var verbe ="modifié";
+      }
+
       $.ajax({
         type: 'POST',
-        url: 'http://localhost:3000/CreateMenu',
+        url: '/'+lien,
         data: menu,
         success: function(retour) {
           console.log(retour);
-          new Carte.Views.GestionMenus().render(false, 'Le menu "'+retour.nom+'"a bien été ajouté. ');
+           $(".gestionContainer").empty();
+          new Carte.Views.GestionMenus().render(false, 'Le menu "'+retour.name+'"a bien été ajouté. ');
         },
         dataType: 'json'
       });
@@ -342,6 +356,7 @@ function(namespace, Backbone) {
   Carte.Views.GestionCompositionMenus = Backbone.View.extend({
     template: urlTpls+"gestioncarte/composition.html",
     el:'.gestionContainer',
+    el2:'#compositionMenus',
     render: function(done) {
       this.$el.empty();
       var view = this;
@@ -358,26 +373,47 @@ function(namespace, Backbone) {
     },
     getMenus: function() {
       var view = this;
+      $(this.el2).empty();
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/GetDishes',
+        url: '/GetDishes',
         success: function(dishes) {
           var options="";
           _.each(dishes, function(p) {
-            options+='<option value="'+p._id+'">'+p.nom+"</option>";
+            options+='<option value="'+p._id+'">'+p.name+"</option>";
           });
           $.ajax({
             type: 'GET',
-            url: 'http://localhost:3000/GetMenus',
+            url: '/GetMenus',
             success: function(menus) {
-              var html = '';
               _.each(menus, function(m) {
-                html+="<h2>"+m.nom+"</h2>";
-                html+='<select id="select'+m._id+'">'+options+'</select>';
-                html+='<button class="btn">Ajouter ce produit au menu</button>';
+                var menuSelect = '', menuDishes='';
+                $("#compositionMenus").append('<div class="unecompo"><h2>'+m.name+'</h2>');
+
+
+                m.dishes= [{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10}];
+                menuDishes = '<table class="table table-bordered"><thead><tr><th>#</th><th>Nom</th><th>Modifier</th></tr></thead><tbody>';
+
+                _.each(m.dishes, function(d) {
+                    menuDishes+="<tr><td>"+d._id+"...</td><td>"+d.name+"</td><td>"+'<a class="btn" href="/removeDishFromMenu/'+m._id+'/'+d._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+                });
+
+                menuDishes+="</tbody></table>";
+                $("#compositionMenus").append(menuDishes);
+
+
+
+
+                menuSelect+='<select id="select'+m._id+'">'+options+'</select>';
+                menuSelect+='<a class="btn" href="/addDishToMenu/'+m._id+'">Ajouter ce produit au menu '+m.name+'</a></div>';
+
+                
+
+
+                $("#compositionMenus").append(menuSelect);
+
+
               });
-              html+='';
-              $("#compositionMenus").html(html);
             },
             dataType: 'json'
           });

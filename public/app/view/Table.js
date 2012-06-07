@@ -15,7 +15,7 @@ Ext.define('YouFood.view.Table', {
 			 		{
 		                flex:0.3,
 		                cls:'categorie_header',
-		                html:"<h3>Votre Table</h3>"
+		                html:"<h3>Your Meal</h3>"
 		            },
 			 		{
 			 			xtype:'toolbar',
@@ -49,7 +49,7 @@ Ext.define('YouFood.view.Table', {
 			 			xtype:'tabledataview',
 			 			store:{
 			 				autoLoad:true,
-			 				fields:['nom','prix','desc','photo'],
+			 				fields:['name','price','desc','img'],
 			 				proxy: {
 			 					type:'ajax',
 			 					url:'/GetDishes',

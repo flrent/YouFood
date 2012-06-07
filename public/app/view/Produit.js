@@ -8,10 +8,10 @@ Ext.define('YouFood.view.Produit', {
 		layout:'vbox',
 		tpl: [
 			'<div class="photo">',
-				'<img src="{photo}" alt="" />',
+				'<img src="{img}" alt="" />',
 			'</div>',
 			'<div class="title">',
-				'<h3>{nom}</h3>',
+				'<h3>{name}</h3>',
 			'</div>',
 			'<div class="clear"></div>',
 			'<div class="description">',

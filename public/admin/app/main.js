@@ -22,7 +22,9 @@ function(namespace, $, Backbone, Accueil, Carte) {
       "/RemoveDish/:id":'removeDish',
       "/EditDish/:id":'editDish',
       "/RemoveMenu/:id":'removeMenu',
-      "/EditMenu/:id":'editMenu'
+      "/EditMenu/:id":'editMenu',
+      "addDishToMenu/:id":'addDishToMenu',
+      "removeDishFromMenu/:idmenu/:iddish":'removeDishFromMenu'
     },
     initialize: function() {
       this.index();
@@ -52,6 +54,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       new Carte.Views.Accueil().render();
     },
     getDishes: function(message) {
+      $(".formAjout").empty();
       if(message) {
         new Carte.Views.GestionProduits().render(false, message);
       }
@@ -71,7 +74,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       var that = this;
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/RemoveDish/'+id,
+        url: '/RemoveDish/'+id,
         success: function(retour) {
           that.getDishes("Suppression réussie.");
         }
@@ -79,9 +82,10 @@ function(namespace, $, Backbone, Accueil, Carte) {
     },
     editDish: function(id) {
       var that = this;
+      $(".formAjout").empty();
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/GetDish/'+id,
+        url: '/GetDish/'+id,
         success: function(retour) {
             new Carte.Views.GestionProduitsAjouter().render(false, {
               name:retour.name,
@@ -97,11 +101,9 @@ function(namespace, $, Backbone, Accueil, Carte) {
       var that = this;
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/GetMenu/'+id,
+        url: '/GetMenu/'+id,
         success: function(retour) {
-            new Carte.Views.GestionMenuAjouter().render(false, {
-              nom:retour.nom
-            });
+            new Carte.Views.GestionMenuAjouter().render(false, retour);
         }
       });      
     },
@@ -109,12 +111,46 @@ function(namespace, $, Backbone, Accueil, Carte) {
       var that = this;
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/RemoveMenu/'+id,
+        url: '/RemoveMenu/'+id,
         success: function(retour) {
           that.getMenus("Suppression réussie.");
         }
       });
     },
+    addDishToMenu: function(idmenu) {
+     
+      var data = {
+        idMenu:idmenu,
+        idDish:$("#select"+idmenu).val()
+      };
+      console.log("Ajout du produit "+data.idDish+" au menu "+idmenu);
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        data:data,
+        url: '/AddDishToMenu/',
+        success: function(retour) {
+          alert('ajout réussi');
+        }
+      });
+    },
+    removeDishFromMenu: function(idmenu, iddish) {
+      var data = {
+        idMenu:idmenu,
+        idDish:iddish
+      };
+      console.log("Remove du produit "+data.idDish+" from menu "+idmenu);
+      
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        data:data,
+        url: '/RemoveDishFromMenu/',
+        success: function(retour) {
+          alert('suppresion réussie');
+        }
+      });
+    }
   });
 
   // Shorthand the application namespace

@@ -4,13 +4,14 @@
   <div class="control-group">
     <label class="control-label" for="addMenuNom">Nom</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addMenuNom" value="<%= nom %>" />
+      <input type="hidden" class="input-xlarge" id="addMenuId" value="<%= _id %>" />
+      <input type="text" class="input-xlarge" id="addMenuNom" value="<%= name %>" />
     </div>
   </div>
 
   <div class="form-actions">
     <button type="submit" class="btn btn-primary" id="addMenuSubmit">Ajouter ce menu</button>
-    <button class="btn" id="cancelMenu">Cancel</button>
+    <a class="btn" href="/getMenus" id="cancelMenu">Cancel</a>
   </div>
 </fieldset>
 </form>

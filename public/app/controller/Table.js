@@ -42,10 +42,12 @@ Ext.define('YouFood.controller.Table', {
         this.getTable().getStore().each(function(record) {
             commande.push({
                 id:record.get("id"),
-                nom:record.get("nom"),
-                desc:record.get("desc")
+                name:record.get("name"),
+                desc:record.get("desc"),
+                img:record.get("img"),
+                price:record.get("price")
             });
-            console.log(record.get("nom")+ " ajouté à la commande");
+            console.log(record.get("name")+ " ajouté à la commande");
         }, this);
 /*
          Ext.data.JsonP.request({
