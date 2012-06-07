@@ -37,8 +37,7 @@ db.open(function(err, db) {
 });
 /* ---------- */
 
-
-
+var resto = new Object();
 
 
 
@@ -48,13 +47,50 @@ app.get('/', function(req, res){
  	res.render('./public/index.html');
 });
 
+app.get("/GetAllApp", function(req, res){
+	var restoTexts;
+	var menu = new Array();
+	var entrees;
+	var plats;
+	var desserts;
+	var boissons;
+	db.collection("restaurant_infos", function(err, restoCollection){
+		restoCollection.find({}).toArray(function(err, restoDoc){
+			restoTexts = restoDoc[0];
+			db.collection("menus", function(err, menusCollection){
+				menusCollection.findOne({active:"1"}, {fields:{"dishes":1}}, function(err, menuDoc){
+					console.log(menuDoc);
+					db.collection("dishes", function(err, dishesCollection){
+						dishesCollection.find({_id:{$in: menuDoc.dishes}}).toArray(function(err, dishesDoc){
+							var menuDishes = dishesDoc;
+							console.log(menuDishes);
+							entrees = menuDishes.filter( function(item){return (item.type==0);} );
+							plats = menuDishes.filter( function(item){return (item.type==1);} );
+							desserts = menuDishes.filter( function(item){return (item.type==2);} );
+							boissons = menuDishes.filter( function(item){return (item.type==3);} );
+							menu.push(entrees);
+							menu.push(plats);
+							menu.push(desserts);
+							menu.push(boissons);
+							resto.infos = restoTexts;
+							resto.menu = menu;
+							console.log(resto);
+							res.send(resto);
+						});
+					});
+				});
+			});
+		});
+	});
+});
+
 app.post("/CreateRestaurantInfos", function(req, res){
 	var infos = req.body.infos;
-	db.createCollection('restaurants_infos',  function(err, collection) {
+	db.createCollection('restaurant_infos',  function(err, collection) {
 		collection.insert(infos, {safe:true}, function(err, doc){
 			if(!err){
-				console.log(doc1);
-				res.send(doc1);
+				console.log(doc);
+				res.send(doc);
 			}
 			else{
 				console.log(err);
@@ -83,6 +119,7 @@ app.post("/UpdateRestaurantInfos", function(req, res){
 app.get("/GetRestaurantInfos", function(req, res){
 	var infos = db.collection("restaurant_infos", function(err, collection){
 		collection.find({}).toArray(function(err, docs){
+			console.log(docs);
 			res.send(docs[0]);
 		})
 	});
@@ -142,7 +179,7 @@ app.post('/UpdateMenu', function(req, res){
 	var menu = req.body.menu;
 	var id = menu.id;
 	db.collection("menus", function(err, collection){
-		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name}}, function(err, doc){
+		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name, active:menu.active}}, function(err, doc){
 			if(!err){
 				res.send(menu);
 			}
@@ -180,7 +217,7 @@ app.get('/GetMenuDishes/:id', function(req, res){
 			db.collection("dishes", function(err, dishesCollection){
 				dishesCollection.find({_id:{$in: doc.dishes}}).toArray(function(err, docs){
 					console.log(docs);
-					res.send(docs.dishes);
+					res.send(docs);
 				});
 			});
 		});
@@ -374,5 +411,20 @@ app.post('/UpdateWaiter', function(req, res){
 	});	
 });
 
+app.post('/SetMultipliers', function(req, res){
+	var multipliers = req.body.multipliers;
+	var id = multipliers.id;
+	db.createCollection("multipliers", function(err, collection){
+		collection.findAndModify({_id:new ObjectId()}, {safe:true}, {$set:{tax:multipliers.tax}}, function(err, doc){
+			if(!err){
+				res.send(multipliers);
+			}
+			else{
+				console.log(err);
+				res.send("Could not update the tax informations.");
+			}
+		});
+	});
+});
 
 app.listen(3000);
