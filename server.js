@@ -46,7 +46,6 @@ app.get('/', function(req, res){
 	logNow("Application mobile initialisée.");
  	res.render('./public/index.html');
 });
-
 app.get("/GetAllApp", function(req, res){
 	var restoTexts;
 	var menu = new Array();
