@@ -134,6 +134,29 @@ app.get('/GetMenus', function(req, res){
 	});	
 });
 
+app.get('/GetMenusWithDishes', function(req, res){
+	var menuArbo = new Array();
+	db.collection("menus", function(err, menuCollection){
+		menuCollection.find().toArray(function(err, docs){
+			docs.forEach(function(i){
+				var singleMenu = new Object();
+				singleMenu._id = i._id;
+				singleMenu.name = i.name;
+				console.log(singleMenu);
+				db.collection("dishes", function(err, dishesCollection){
+					dishesCollection.find({_id:{$in: i.dishes}}).toArray(function(err, docus){
+						singleMenu.dishes = docus;
+						console.log(singleMenu);
+						menuArbo.push(singleMenu);
+					});
+				});
+			});
+			console.log(menuArbo);
+			res.send(menuArbo);
+		});
+	});	
+});
+
 app.get('/GetMenu/:id', function(req, res){
 	var id = req.params.id;
 	var menu = db.collection('menus', function(err, menuCollection){
