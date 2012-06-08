@@ -137,22 +137,33 @@ app.get('/GetMenus', function(req, res){
 app.get('/GetMenusWithDishes', function(req, res){
 	var menuArbo = new Array();
 	db.collection("menus", function(err, menuCollection){
-		menuCollection.find().toArray(function(err, docs){
-			docs.forEach(function(i){
+		menuCollection.find().toArray(function(err, menuDocs){
+			var count = 1;
+			menuDocs.forEach(function(menuItem){
 				var singleMenu = new Object();
-				singleMenu._id = i._id;
-				singleMenu.name = i.name;
-				console.log(singleMenu);
+				singleMenu._id = menuItem._id;
+				singleMenu.name = menuItem.name;
 				db.collection("dishes", function(err, dishesCollection){
-					dishesCollection.find({_id:{$in: i.dishes}}).toArray(function(err, docus){
-						singleMenu.dishes = docus;
+					dishesCollection.find({_id:{$in: menuItem.dishes}}).toArray(function(err, dishesDoc){
+						console.log(count);
+						if(dishesDoc != null){
+							singleMenu.dishes = dishesDoc;
+						}
+						else{
+							singleMenu.dishes = new Array();
+						}
 						console.log(singleMenu);
 						menuArbo.push(singleMenu);
+						
+						if (count == menuDocs.length) {
+							console.log(menuArbo);
+							res.send(menuArbo);
+						}
+						count++;
 					});
 				});
 			});
-			console.log(menuArbo);
-			res.send(menuArbo);
+			
 		});
 	});	
 });
@@ -295,7 +306,7 @@ app.post('/AddDishToMenu', function(req, res){
 	var idMenu = req.body["idMenu"];
 	var idDish = req.body["idDish"];
 	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
+		menuCollection.findAndModify({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
 			console.log(menuDoc);
 			res.send(menuDoc);
 		});
