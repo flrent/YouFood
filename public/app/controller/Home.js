@@ -1,10 +1,12 @@
 Ext.define('YouFood.controller.Home', {
     extend: 'Ext.app.Controller',
-    requires:['Ext.Anim'],
+    requires:['Ext.Anim', 'Ext.Img'],
     config: {
         refs: {
             accueil:'homepanel',
-            homeDataView: '#homedataview'
+            homeDataView: '#homedataview',
+            imageResto:'homepanel img',
+            boxes:'homepanel .box'
         },
         control: {
             '#homedataview': {
@@ -24,19 +26,31 @@ Ext.define('YouFood.controller.Home', {
                 {
                     flex:0.3,
                     cls:'categorie_header',
-                    html:"<h3>"+record.get("nom")+"</h3>",
-                    style:'background:#c37e4c'
+                    html:"<h3>"+record.get("name")+"</h3>"
                 },
                 {
                     xtype:'categoriedataview',
                     store:{
-                        fields:['nom','type','desc','photo'],
+                        fields:['name','desc','img','price'],
                         autoLoad:true,
-                        data:record.raw.items
+                        proxy: {
+                            type:'ajax',
+                            url:'/GetDishes',
+                            reader: {
+                                type:"json"
+                            }
+                        }
                     }
                 }
 
             ]
+        });
+    },
+    launch: function() {
+
+        Ext.Anim.run(this.getImageResto(), 'fade', {
+            out: false,
+           duration: 3000
         });
     }
 });

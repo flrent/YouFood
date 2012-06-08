@@ -1,5 +1,9 @@
-body {overflow: scroll;}
+body {overflow: scroll;background:#2d1300;}
+
+.container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {width: 1000px;}
 
 .clear {clear:both;}
 
 .content {margin-top:40px;}
+
+.accueil {}

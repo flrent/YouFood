@@ -12,7 +12,8 @@ Ext.define('YouFood.view.Home', {
 	 			defaults:{styleHtmlContent:true},
 	 			items:[
 	 				{
-	 					flex:1,
+	 					flex:1.5,
+	 					cls:'accueil',
 	 					items:[
 	 						{
 	 							layout:'hbox',
@@ -20,10 +21,9 @@ Ext.define('YouFood.view.Home', {
 	 								{
 	 									flex:1.5,
 					 					html:[
-							 				'<div class="accueil">',
 							 					'<h1>Welcome to our restaurant, enjoy sitting in one of the best in town.</h1>',
-							 					'<p>Notre restaurant notre restaurant notre restaurant notre restaurant notre restaurant notre restaurant notre restaurant notre restaurant </p>',
-							 				'</div>'
+							 					'<p>Let your fingers guide you through our menu, select your choice and order directly <br/> from our tab.</p>',
+							 				
 							 			].join('')
 							 		},
 							 		{
@@ -32,7 +32,7 @@ Ext.define('YouFood.view.Home', {
 							 				{
 							 					html:[
 							 						'<h3>This is the vietnam week</h3>',
-							 						'<p>This week we are proud to announce that we are launching officially the vietnameese week. Enjoy it all you can !</p>'
+							 						'<p>This week we are proud to announce that we are launching officially the vietnamese week. Enjoy it all you can !</p>'
 							 					].join('')
 							 				}
 							 			]
@@ -40,6 +40,11 @@ Ext.define('YouFood.view.Home', {
 	 							]
 	 						}
 	 					]
+	 				},{
+	 					flex:1,
+	 					xtype:'image',
+	 					cls:'frontimage',
+	 					src:'resources/images/restaurant1.jpg'
 	 				},
 			        {
 			        	flex:1,
@@ -49,7 +54,6 @@ Ext.define('YouFood.view.Home', {
 			 			scroll:false,
 			 			itemTpl:[
 			 				'<div class="box">',
-			 					'<img src="{photo}">',
 			 					'<p>{nom}</p>',
 			 				'</div>'
 			 			].join(''),

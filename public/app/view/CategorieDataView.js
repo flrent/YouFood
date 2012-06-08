@@ -7,9 +7,10 @@ Ext.define('YouFood.view.CategorieDataView', {
 		flex:1.5,
 		itemTpl:[
 			'<div class="produits">',
-				'<img src="{photo}">',
-				'<h3>{nom}</h3>',
+				'<img src="{img}">',
+				'<h3>{name}</h3>',
 				'<p>{desc}</p>',
+				'<p class="prix">{price} $</p>',
 			'</div>'
 		],
 		styleHtmlContent:true

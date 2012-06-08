@@ -1,9 +1,9 @@
 Ext.define('YouFood.view.SettingsPanel', {
 	extend: 'Ext.Panel',
 	xtype:'settingspanel',
-	requires:['Ext.form.FieldSet','Ext.field.Number'],
+	requires:['Ext.form.FieldSet','Ext.field.Number','Ext.field.Password'],
 	config: {
-		title:'Réglages',
+		title:'Settings',
 		iconCls:'settings',
 		cls:'settingspanel',
 		layout: {type:'card',animation:{type:'flip'}},
@@ -23,19 +23,19 @@ Ext.define('YouFood.view.SettingsPanel', {
 						{xtype:'spacer'},
 				        {
 				            xtype: 'fieldset',
-				            title: 'Espace réservé',
-				            instructions: 'Pour accéder aux réglages vous devez entrer le mode de passe.',
+				            title: 'Reserved access',
+				            instructions: 'To change the settings, you must be authorized and provide the password.',
 				            items: [
 				                {
-				                    xtype: 'textfield',
+				                    xtype: 'passwordfield',
 				                    name : 'password'
 				                },
 				                {
 				                	xtype:'button',
 				                	ui:'action',
-				                	text:'Entrer',
-				 				iconCls:'user_business',
-				 				iconMask:true,
+				                	text:'Enter',
+				 					iconCls:'user_business',
+				 					iconMask:true,
 				                	id:'settingsEntrer'
 				                }
 				            ]
@@ -43,12 +43,12 @@ Ext.define('YouFood.view.SettingsPanel', {
 				        {
 				        	id:'numeroTablePanel',
 				        	styleHtmlContent:true,
-				        	tpl:['<p>Table numéro : {table}</p>']
+				        	tpl:['<p>Table numero : {table}</p>']
 				        },
 				        {
 				        	id:'identifiantServeurPanel',
 				        	styleHtmlContent:true,
-				        	tpl:['<p>Serveur : {serveur}</p>']
+				        	tpl:['<p>Serveur id : {serveur}</p>']
 				        },
 				        {xtype:'spacer'}
 			        ]
@@ -67,8 +67,8 @@ Ext.define('YouFood.view.SettingsPanel', {
 							{xtype:'spacer'},
 					        {
 					            xtype: 'fieldset',
-					            title: 'Numéro de table',
-					            instructions: 'Changez le numéro de table de cette tablette.',
+					            title: 'Table number',
+					            instructions: 'Change this tab\' table number.',
 					            items: [
 					                {
 					                    xtype: 'numberfield',
@@ -82,8 +82,8 @@ Ext.define('YouFood.view.SettingsPanel', {
 					        },
 					        {
 					            xtype: 'fieldset',
-					            title: 'Identifiant du serveur',
-					            instructions: 'Changez le serveur responsable de cette table.',
+					            title: 'Waited ID',
+					            instructions: 'Change the waiter id of this tab.',
 					            items: [
 					                {
 					                    xtype: 'numberfield',
@@ -98,14 +98,14 @@ Ext.define('YouFood.view.SettingsPanel', {
 							{
 								xtype:'button',
 								ui:'confirm',
-								text:'Changer',
+								text:'Change',
 								id:'changeButton'
 							},
 					        {xtype:'spacer'},
 							{
 								xtype:'button',
 								ui:'decline',
-								text:'Déconnecter',
+								text:'Log out',
 								id:'logOutButton'
 							},
 					        {xtype:'spacer'}

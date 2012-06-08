@@ -2,42 +2,48 @@
 	"content": [
 		{
 			"id":0,
-			"nom":"Entrées",
+			"nom":"Starters",
 			"desc":"",
 			"photo":"http://www.abbaye-talloires.com/photos/offres/principales/plats-5_33.jpg",
 			"items":[
 				{
 					"id":3,
 					"nom":"Saumon fumé",
+					"prix":150,
 					"photo":"resources/images/caviar.jpg",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":6166325,
 					"nom":"Caviar cru",
+					"prix":150,
 					"photo":"resources/images/caviar.jpg",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":454235325,
 					"nom":"Caviar cru",
+					"prix":150,
 					"photo":"resources/images/caviar.jpg",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":41411111,
 					"nom":"Caviar cru",
+					"prix":150,
 					"photo":"resources/images/caviar.jpg",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":43243242,
+					"prix":150,
 					"photo":"resources/images/caviar.jpg",
 					"nom":"Caviar cru",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
 				},
 				{
 					"id":4211134322,
+					"prix":150,
 					"nom":"Caviar cru",
 					"photo":"resources/images/caviar.jpg",
 					"desc":"Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé Superbe saumon fumé "
@@ -48,7 +54,7 @@
 			"id":1,
 			"desc":"",
 			"photo":"http://www.abbaye-talloires.com/photos/offres/principales/plats-5_33.jpg",
-			"nom":"Plats",
+			"nom":"Dishes",
 			"items":[
 				{
 					"id":5,
@@ -67,7 +73,7 @@
 		{
 			"id":2,
 			"desc":"",
-			"nom":"Desserts",
+			"nom":"Deserts",
 			"photo":"http://www.abbaye-talloires.com/photos/offres/principales/plats-5_33.jpg",
 			"items":[
 				{
@@ -88,7 +94,7 @@
 			"id":3,
 			"desc":"",
 			"photo":"http://www.abbaye-talloires.com/photos/offres/principales/plats-5_33.jpg",
-			"nom":"Boissons",
+			"nom":"Drinks",
 			"items":[
 				{
 					"id":7,

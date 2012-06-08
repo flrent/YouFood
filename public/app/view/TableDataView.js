@@ -8,9 +8,10 @@ Ext.define('YouFood.view.TableDataView', {
 		itemTpl:[
 			'<div class="produits">',
 				'<div class="edit"></div>',
-				'<img src="{photo}">',
-				'<h3>{nom}</h3>',
+				'<img src="{img}">',
+				'<h3>{name}</h3>',
 				'<p>{desc}</p>',
+				'<p class="prix">{price}</p>',
 			'</div>'
 		],
 		styleHtmlContent:true

@@ -21,8 +21,8 @@ Ext.define('YouFood.controller.Produit', {
 
         if(this.getTablePanel().getCommandeStatus()==0) {  
           msg.show({
-             title: 'Commander',
-             message: 'Voulez-vous ajouter à votre liste de commande "'+produit.nom+'" ?',
+             title: 'Your Meal',
+             message: 'Do you want to add to your list "'+produit.name+'" ?',
              width: 300,
              buttons: Ext.MessageBox.OKCANCEL,
              fn: function(buttonId) {
@@ -36,8 +36,8 @@ Ext.define('YouFood.controller.Produit', {
         }
         else {
           msg.show({
-             title: 'Commande déjà validée',
-             message: "Votre commande a déjà été validée. Il n'est plus possible de la modifier.",
+             title: 'Meal ordered',
+             message: "Your meal has already been ordered. We cannot change it.",
              width: 300,
              buttons: Ext.MessageBox.OK,
              fn: Ext.emptyFn

@@ -2,10 +2,10 @@
 <form class="form-horizontal">
 <fieldset>
   <div class="control-group">
-    <input type="hidden" class="input-xlarge" id="addProduitId" value="" />
+    <input type="hidden" class="input-xlarge" id="addProduitId" value="<%= _id %>" />
     <label class="control-label" for="addProduitNom">Nom</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitNom" value="<%= nom %>" />
+      <input type="text" class="input-xlarge" id="addProduitNom" value="<%= name %>" />
     </div>
   </div>
   <div class="control-group">
@@ -17,18 +17,18 @@
   <div class="control-group">
     <label class="control-label" for="addProduitPhoto">Photo</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitPhoto" value="<%= photo %>">
+      <input type="text" class="input-xlarge" id="addProduitPhoto" value="<%= img %>">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="addProduitPrix">Prix</label>
     <div class="controls">
-      <input type="text" class="input-xlarge" id="addProduitPrix" value="<%= prix %>">
+      <input type="text" class="input-xlarge" id="addProduitPrix" value="<%= price %>">
     </div>
   </div>
   <div class="form-actions">
     <button type="button" class="btn btn-primary" id="addProduitSubmit">Save changes</button>
-    <button class="btn" id="cancelProduit">Cancel</button>
+    <a class="btn"  id="cancelProduit" href="/getDishes">Cancel</a>
   </div>
 </fieldset>
 </form>

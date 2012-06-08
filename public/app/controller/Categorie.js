@@ -21,17 +21,11 @@ Ext.define('YouFood.controller.Categorie', {
                 {
                     xtype:'produit',
                     data:{
-                        "nom":record.get("nom"),
-                        "photo":record.get("photo"),
+                        "name":record.get("name"),
+                        "img":record.get("img"),
                         "desc":record.get("desc"),
+                        "price":record.get("price"),
                     }
-                },
-                {
-                    xtype:'button',
-                    ui:'action',
-                    cls:'buttoncommander',
-                    text:'Commander',
-                    docked:'bottom'
                 }
             ]
         });

@@ -200,7 +200,8 @@ app.post('/CreateMenu', function(req, res){
 
 app.post('/UpdateMenu', function(req, res){
 	var menu = req.body.menu;
-	var id = menu.id;
+	var id = menu._id;
+	logNow("We are updating menu "+id+" : "+menu);
 	db.collection("menus", function(err, collection){
 		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name, active:menu.active}}, function(err, doc){
 			if(!err){
@@ -274,15 +275,17 @@ app.post('/CreateDish', function(req, res){
 
 app.post('/UpdateDish', function(req, res){
 	var dish = req.body.dish;
-	var id = dish.id;
+	var id = dish._id;
+	logNow("Modification du dish "+id);
+	logNow("Reception de "+dish);
 	db.collection("dishes", function(err, collection){
 		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:dish.name, price:dish.price, desc:dish.desc, img:dish.img}}, function(err, doc){
 			if(!err){
 				res.send(doc);
 			}
 			else{
-				console.log("unable to update a dish");
 				console.log(err);
+				res.send("unable to update a dish");
 			}
 		});
 	});
