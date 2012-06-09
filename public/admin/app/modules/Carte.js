@@ -206,42 +206,42 @@ function(namespace, Backbone) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl({texte:'coucou'});
-
-        // If a done function is passed, call it with the element
-        if (_.isFunction(done)) {
-          done(view.el);
-        }
-        $("#ajouterTexte").bind("click", view.ajouter);
+        
+        $.ajax({
+          type: 'GET',
+          url: '/GetRestaurantInfos',
+          success: function(retour) {
+            view.el.innerHTML = tmpl(retour);
+            if (_.isFunction(done)) {
+              done(view.el);
+            }
+            $("#infosRestoMaj").bind("click", view.update);
+          },
+          dataType: 'json'
+        });
       });
     },
-    ajouter: function(event) {
-      new Carte.Views.GestionTextesAjouter().render();
-    }
-  });
-
-
-
-
-
-
-  Carte.Views.GestionTextesAjouter = Backbone.View.extend({
-    template: urlTpls+"gestioncarte/ajoutertexte.html",
-    el:'.formAjout',
-    render: function(done) {
-      this.$el.empty();
+    update: function(event) {
+      event.preventDefault();
       var view = this;
-      // Fetch the template, render it to the View element and call done.
-      namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
-
-        // If a done function is passed, call it with the element
-        if (_.isFunction(done)) {
-          done(view.el);
-        }
-      });
+      $.ajax({
+          type: 'POST',
+          data: {
+            infos:{
+              name:$("#infosRestoTitre").val(),
+              desc:$("#infosRestoDesc").val(),
+              img:""
+            }
+          },
+          url: '/UpdateRestaurantInfos',
+          success: function(retour) {
+            new Carte.Views.GestionTextes.render();
+          },
+          dataType: 'json'
+        });
     }
   });
+
 
   Carte.Views.GestionMenus = Backbone.View.extend({
     template: urlTpls+"gestioncarte/menus.html",

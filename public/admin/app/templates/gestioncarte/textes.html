@@ -1,36 +1,23 @@
-<button class="pull-right btn btn-large btn-success" id="ajouterTexte">Ajouter un texte</button>
 <h3>Gestion des textes</h3>
 <div class="clear"></div>
 <p><br></p>
 
-
-<div class="formAjout">
-</div>
-
-<table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Photo</th>
-        <th>Prix</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td><%= texte %></td>
-        <td>Blablab alb akfeozkfoezkfoekzfoekz ofkezof kezofeozkf oezk foezkfozkf zofkezo fz</td>
-        <td>aucune</td>
-        <td>$50</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Poulet Roti</td>
-        <td>Blablab alb akfeozkfoezkfoekzfoekz ofkezof kezofeozkf oezk foezkfozkf zofkezo fz</td>
-        <td>aucune</td>
-        <td>$50</td>
-      </tr>
-    </tbody>
-  </table>
+<form class="form-horizontal">
+<fieldset>
+  <div class="control-group">
+    <label class="control-label" for="input01">Nom du restaurant</label>
+    <div class="controls">
+      <input type="text" class="input-xlarge" id="infosRestoTitre" value="<%= name %>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="input01">Texte d'accueil</label>
+    <div class="controls">
+      <input type="text" class="input-xlarge" id="infosRestoDesc" value="<%= desc %>">
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" id="infosRestoMaj" class="btn btn-primary">Save changes</button>
+  </div>
+</fieldset>
+</form>

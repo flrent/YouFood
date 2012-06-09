@@ -135,25 +135,41 @@ app.get('/GetMenus', function(req, res){
 
 app.get('/GetMenusWithDishes', function(req, res){
 	var menuArbo = new Array();
-	db.collection("menus", function(err, menuCollection){
-		menuCollection.find().toArray(function(err, docs){
-			docs.forEach(function(i){
-				var singleMenu = new Object();
-				singleMenu._id = i._id;
-				singleMenu.name = i.name;
-				console.log(singleMenu);
-				db.collection("dishes", function(err, dishesCollection){
-					dishesCollection.find({_id:{$in: i.dishes}}).toArray(function(err, docus){
-						singleMenu.dishes = docus;
-						console.log(singleMenu);
+
+
+	var getDishes = function(docs, callback) {
+		db.collection("dishes", function(err, dishesCollection){
+			logNow(JSON.stringify(docs));
+			dishesCollection.find({_id:{$in: docs.dishes}}).toArray(function(err, docus){
+				callback(docus);
+			});
+		});
+	};
+
+	var getMenus = function(callback2) {
+		db.collection("menus", function(err, menuCollection){
+			menuCollection.find().toArray(function(err, docs){
+
+				docs.forEach(function(i){
+					var singleMenu = {
+						_id: i._id,
+						name: i.name
+					};
+					logNow(i._id);
+					TEMPgetMenuDishes(i._id.toString(), function(data) {
+						singleMenu.dishes = data;
 						menuArbo.push(singleMenu);
 					});
 				});
+				callback2(menuArbo);		
 			});
-			console.log(menuArbo);
-			res.send(menuArbo);
-		});
-	});	
+		});	
+	};
+
+	getMenus(function(data) {
+		logNow(data);
+		res.send(JSON.stringify(data));	
+	});
 });
 
 app.get('/GetMenu/:id', function(req, res){
@@ -232,6 +248,20 @@ app.get('/GetDish/:id', function(req, res){
 		});
 	});
 });
+
+var TEMPgetMenuDishes = function(menuid, callback) {
+	logNow("get des plats de "+menuid);
+	var menu = db.collection('menus', function(err, menuCollection){
+		menuCollection.findOne({_id:new ObjectId(menuid)}, {fields:{"dishes":1}}, function(err, doc){
+			db.collection("dishes", function(err, dishesCollection){
+				dishesCollection.find({_id:{$in: doc.dishes}}).toArray(function(err, docs){
+			//		console.log(docs);
+					callback(docs);
+				});
+			});
+		});
+	});
+};
 
 app.get('/GetMenuDishes/:id', function(req, res){
 	var id = req.params.id;
