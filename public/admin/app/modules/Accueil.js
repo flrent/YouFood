@@ -31,6 +31,8 @@ function(namespace, Backbone) {
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
         view.el.innerHTML = tmpl();
+        $("#toplevelmenu li").removeClass("active");
+        $("#toplevelmenu li.accueil").addClass("active");
 
         // If a done function is passed, call it with the element
         if (_.isFunction(done)) {
@@ -45,8 +47,10 @@ function(namespace, Backbone) {
         email:$("#loginEmail").val(),
         pass:$("#loginPassword").val()
       };
-      this.isLogged=true;
-      Backbone.history.navigate("carte", true);
+      localStorage.setItem("email", account.email);
+      localStorage.setItem("pass", account.pass);
+      localStorage.setItem("isAuthenticated", true);
+      Backbone.history.navigate("/carte", true);
 
     }
   });

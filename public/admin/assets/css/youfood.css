@@ -7,3 +7,8 @@ body {overflow: scroll;background:#2d1300;}
 .content {margin-top:40px;}
 
 .accueil {}
+
+.bg {
+	background: url(../img/youfood.png) no-repeat -101px 68px;
+	height: 560px;
+}

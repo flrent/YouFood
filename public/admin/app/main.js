@@ -7,10 +7,11 @@ require([
 
   // Modules
   "modules/Accueil",
-  "modules/Carte"
+  "modules/Carte",
+  "modules/Commandes"
 ],
 
-function(namespace, $, Backbone, Accueil, Carte) {
+function(namespace, $, Backbone, Accueil, Carte, Commandes) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -18,6 +19,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       "": "index",
       "index": "index",
       "carte":"carte",
+      "admin/commandes":"commandes",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
@@ -41,7 +43,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
         // Fix for hashes in pushState and hash fragment
         if (hash && !route._alreadyTriggered) {
           // Reset to home, pushState support automatically converts hashes
-          Backbone.history.navigate("", false);
+          Backbone.history.navigate("/admin", false);
 
           // Trigger the default browser behavior
           location.hash = hash;
@@ -51,8 +53,13 @@ function(namespace, $, Backbone, Accueil, Carte) {
         }
       });
     },
+    commandes: function() {
+      new Commandes.Views.Accueil().render();
+      Backbone.history.navigate("/admin/commandes", false);
+    },
     carte: function() {
       new Carte.Views.Accueil().render();
+      Backbone.history.navigate("/admin", false);
     },
     getDishes: function(message) {
       $(".formAjout").empty();
@@ -62,6 +69,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       else {
         new Carte.Views.GestionProduits().render();
       }
+      Backbone.history.navigate("/admin", false);
     },
     getMenus: function(message) {
       if(message) {
@@ -70,6 +78,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       else {
         new Carte.Views.GestionMenus().render();
       }
+      Backbone.history.navigate("/admin", false);
     },
     removeDish: function(id) {
       var that = this;
@@ -78,6 +87,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
         url: '/RemoveDish/'+id,
         success: function(retour) {
           that.getDishes("Suppression réussie.");
+          Backbone.history.navigate("/admin", false);
         }
       });
     },
@@ -95,6 +105,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
               desc:retour.desc,
               price:retour.price  
             });
+          Backbone.history.navigate("/admin", false);
         }
       });      
     },
@@ -105,6 +116,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
         url: '/GetMenu/'+id,
         success: function(retour) {
             new Carte.Views.GestionMenuAjouter().render(false, retour);
+            Backbone.history.navigate("/admin", false);
         }
       });      
     },
@@ -114,7 +126,8 @@ function(namespace, $, Backbone, Accueil, Carte) {
         type: 'GET',
         url: '/RemoveMenu/'+id,
         success: function(retour) {
-          that.getMenus("Suppression réussie.");
+          that.getMenus(false, "Suppression réussie.");
+          Backbone.history.navigate("/admin", false);
         }
       });
     },
@@ -132,14 +145,13 @@ function(namespace, $, Backbone, Accueil, Carte) {
         data:data,
         url: '/AddDishToMenu/',
         success: function(retour) {
-          $("#compositionStatus").html($('<div class="alert alert-success">Ajout réussi !</div>'));
-          that.getComposition();
-          Backbone.history.navigate("", false);
+          that.getComposition("Ajout réussi !");
+          Backbone.history.navigate("/admin", false);
         }
       });
     },
-    getComposition: function() {
-      new Carte.Views.GestionCompositionMenus().render();
+    getComposition: function(message) {
+      new Carte.Views.GestionCompositionMenus().render(false, message);
     },
     removeDishFromMenu: function(idmenu, iddish) {
       var data = {
@@ -154,8 +166,8 @@ function(namespace, $, Backbone, Accueil, Carte) {
         data:data,
         url: '/RemoveDishFromMenu/',
         success: function(retour) {
-          $("#compositionStatus").html($('<div class="alert alert-success">Suppression réussie !</div>'));
-          Backbone.history.navigate("", false);
+          Backbone.history.navigate("/admin", false);
+          that.getComposition("Suppression réussie !");
         }
       });
     }
