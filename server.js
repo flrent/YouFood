@@ -323,7 +323,7 @@ app.post('/RemoveDishFromMenu', function(req, res){
 	var idMenu = req.body["idMenu"];
 	var idDish = req.body["idDish"];
 	var menu = db.collection("menus", function(err, menuCollection){
-		menuCollection.update({_id:new ObjectId(idMenu)}, {$pull:{"dishes":{_id:new ObjectId(idDish)}}}, function(err, doc){
+		menuCollection.update({_id:new ObjectId(idMenu)}, {$pull:{"dishes":new ObjectId(idDish)}}, function(err, doc){
 			console.log(doc);
 			res.send(doc);
 		});
