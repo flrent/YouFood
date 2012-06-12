@@ -307,9 +307,14 @@ app.post('/AddDishToMenu', function(req, res){
 	var idDish = req.body["idDish"];
 	logNow("Ajout du plat "+idDish+" dans le menu "+idMenu);
 	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.findAndModify({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
-			console.log(menuDoc);
-			res.send(menuDoc);
+		menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, {safe:true}, function(err, menuDoc){
+			if(!err){
+				res.send("Successfully added.");
+			}
+			else{
+				console.log(err);
+				res.send("Failed to add a dish in the menu.");	
+			}
 		});
 	});
 });
