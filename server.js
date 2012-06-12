@@ -46,6 +46,7 @@ app.get('/', function(req, res){
 	logNow("Application mobile initialisée.");
  	res.render('./public/index.html');
 });
+
 app.get("/GetAllApp", function(req, res){
 	var restoTexts;
 	var menu = new Array();
@@ -135,41 +136,36 @@ app.get('/GetMenus', function(req, res){
 
 app.get('/GetMenusWithDishes', function(req, res){
 	var menuArbo = new Array();
-
-
-	var getDishes = function(docs, callback) {
-		db.collection("dishes", function(err, dishesCollection){
-			logNow(JSON.stringify(docs));
-			dishesCollection.find({_id:{$in: docs.dishes}}).toArray(function(err, docus){
-				callback(docus);
-			});
-		});
-	};
-
-	var getMenus = function(callback2) {
-		db.collection("menus", function(err, menuCollection){
-			menuCollection.find().toArray(function(err, docs){
-
-				docs.forEach(function(i){
-					var singleMenu = {
-						_id: i._id,
-						name: i.name
-					};
-					logNow(i._id);
-					TEMPgetMenuDishes(i._id.toString(), function(data) {
-						singleMenu.dishes = data;
+	db.collection("menus", function(err, menuCollection){
+		menuCollection.find().toArray(function(err, menuDocs){
+			var count = 1;
+			menuDocs.forEach(function(menuItem){
+				var singleMenu = new Object();
+				singleMenu._id = menuItem._id;
+				singleMenu.name = menuItem.name;
+				db.collection("dishes", function(err, dishesCollection){
+					dishesCollection.find({_id:{$in: menuItem.dishes}}).toArray(function(err, dishesDoc){
+						console.log(count);
+						if(dishesDoc != null){
+							singleMenu.dishes = dishesDoc;
+						}
+						else{
+							singleMenu.dishes = new Array();
+						}
+						console.log(singleMenu);
 						menuArbo.push(singleMenu);
+						
+						if (count == menuDocs.length) {
+							console.log(menuArbo);
+							res.send(menuArbo);
+						}
+						count++;
 					});
 				});
-				callback2(menuArbo);		
 			});
-		});	
-	};
-
-	getMenus(function(data) {
-		logNow(data);
-		res.send(JSON.stringify(data));	
-	});
+			
+		});
+	});	
 });
 
 app.get('/GetMenu/:id', function(req, res){
@@ -249,20 +245,6 @@ app.get('/GetDish/:id', function(req, res){
 	});
 });
 
-var TEMPgetMenuDishes = function(menuid, callback) {
-	logNow("get des plats de "+menuid);
-	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.findOne({_id:new ObjectId(menuid)}, {fields:{"dishes":1}}, function(err, doc){
-			db.collection("dishes", function(err, dishesCollection){
-				dishesCollection.find({_id:{$in: doc.dishes}}).toArray(function(err, docs){
-			//		console.log(docs);
-					callback(docs);
-				});
-			});
-		});
-	});
-};
-
 app.get('/GetMenuDishes/:id', function(req, res){
 	var id = req.params.id;
 	var menu = db.collection('menus', function(err, menuCollection){
@@ -323,8 +305,9 @@ app.post('/UpdateDish', function(req, res){
 app.post('/AddDishToMenu', function(req, res){
 	var idMenu = req.body["idMenu"];
 	var idDish = req.body["idDish"];
+	logNow("Ajout du plat "+idDish+" dans le menu "+idMenu);
 	var menu = db.collection('menus', function(err, menuCollection){
-		menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
+		menuCollection.findAndModify({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, function(err, menuDoc){
 			console.log(menuDoc);
 			res.send(menuDoc);
 		});

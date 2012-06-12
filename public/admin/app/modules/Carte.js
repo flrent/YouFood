@@ -384,14 +384,14 @@ function(namespace, Backbone) {
           });
           $.ajax({
             type: 'GET',
-            url: '/GetMenus',
+            url: '/GetMenusWithDishes',
             success: function(menus) {
               _.each(menus, function(m) {
                 var menuSelect = '', menuDishes='';
                 $("#compositionMenus").append('<div class="unecompo"><h2>'+m.name+'</h2>');
 
 
-                m.dishes= [{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10}];
+                //m.dishes= [{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10},{_id:0,name:"Coucou",desc:"salut",img:"test",price:10}];
                 menuDishes = '<table class="table table-bordered"><thead><tr><th>#</th><th>Nom</th><th>Modifier</th></tr></thead><tbody>';
 
                 _.each(m.dishes, function(d) {
@@ -405,7 +405,7 @@ function(namespace, Backbone) {
 
 
                 menuSelect+='<select id="select'+m._id+'">'+options+'</select>';
-                menuSelect+='<a class="btn" href="/addDishToMenu/'+m._id+'">Ajouter ce produit au menu '+m.name+'</a></div>';
+                menuSelect+='<a class="btn" href="addDishToMenu/'+m._id+'">Ajouter ce produit au menu '+m.name+'</a></div>';
 
                 
 
