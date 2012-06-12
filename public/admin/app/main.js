@@ -19,6 +19,7 @@ function(namespace, $, Backbone, Accueil, Carte) {
       "index": "index",
       "carte":"carte",
       "/getDishes":"getDishes",
+      "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
       "/EditDish/:id":'editDish',
       "/RemoveMenu/:id":'removeMenu',
@@ -118,21 +119,27 @@ function(namespace, $, Backbone, Accueil, Carte) {
       });
     },
     addDishToMenu: function(idmenu) {
-     
       var data = {
         idMenu:idmenu,
         idDish:$("#select"+idmenu).val()
       };
+
       console.log("Ajout du produit "+data.idDish+" au menu "+idmenu);
       var that = this;
+
       $.ajax({
         type: 'POST',
         data:data,
         url: '/AddDishToMenu/',
         success: function(retour) {
-          alert('ajout réussi');
+          $("#compositionStatus").html($('<div class="alert alert-success">Ajout réussi !</div>'));
+          that.getComposition();
+          Backbone.history.navigate("", false);
         }
       });
+    },
+    getComposition: function() {
+      new Carte.Views.GestionCompositionMenus().render();
     },
     removeDishFromMenu: function(idmenu, iddish) {
       var data = {
@@ -147,7 +154,8 @@ function(namespace, $, Backbone, Accueil, Carte) {
         data:data,
         url: '/RemoveDishFromMenu/',
         success: function(retour) {
-          alert('suppresion réussie');
+          $("#compositionStatus").html($('<div class="alert alert-success">Suppression réussie !</div>'));
+          Backbone.history.navigate("", false);
         }
       });
     }

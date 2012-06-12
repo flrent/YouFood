@@ -215,7 +215,7 @@ function(namespace, Backbone) {
             if (_.isFunction(done)) {
               done(view.el);
             }
-            $("#infosRestoMaj").bind("click", view.update);
+            $("#infosRestoMaj").bind("click", view.update, view);
           },
           dataType: 'json'
         });
@@ -224,18 +224,20 @@ function(namespace, Backbone) {
     update: function(event) {
       event.preventDefault();
       var view = this;
+
       $.ajax({
           type: 'POST',
           data: {
             infos:{
               name:$("#infosRestoTitre").val(),
+              _id:$("#infosRestoId").val(),
               desc:$("#infosRestoDesc").val(),
               img:""
             }
           },
           url: '/UpdateRestaurantInfos',
           success: function(retour) {
-            new Carte.Views.GestionTextes.render();
+            alert(JSON.stringify(retour));
           },
           dataType: 'json'
         });
