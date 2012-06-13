@@ -54,19 +54,19 @@ Ext.define('YouFood.view.Home', {
 			 			scroll:false,
 			 			itemTpl:[
 			 				'<div class="box">',
-			 					'<p>{nom}</p>',
+			 					'<p>{name}</p>',
 			 				'</div>'
 			 			].join(''),
 			 			store:{
 			 				autoLoad:true,
-								fields:['nom','type','desc','photo'],
-			 				hasMany:['items'],
+							fields:['name','type','dishes', 'desc','img', '_id', 'price'],
+			 				hasMany:['menu'],
 			 				proxy: {
 			 					type:'ajax',
-			 					url:'data.json',
+			 					url:'/mock.json',
 			 					reader: {
 			 						type:"json",
-			 						rootProperty:'content'
+			 						rootProperty:'menu'
 			 					}
 			 				}
 			 			}

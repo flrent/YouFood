@@ -31,6 +31,7 @@ Ext.define('YouFood.controller.Settings', {
         var t = this.getNumeroTableChamp().getValue();
         if(!t) t = 0;
         this.getSettingsPanel().numeroTable = t;
+        localStorage.setItem("table", t);
         this.getNumeroTablePanel().setData({table:t});
     },
     changeServeur: function() {
@@ -42,6 +43,7 @@ Ext.define('YouFood.controller.Settings', {
     launch: function() {
         this.getIdentifiantServeurPanel().setData({serveur:"Jean"});
         this.getNumeroTablePanel().setData({table:2});
+        localStorage.setItem("table", t);
     },
     changeButton: function() {
         this.changeTable();
