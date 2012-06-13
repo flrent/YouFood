@@ -42,7 +42,7 @@ Ext.define('YouFood.controller.Table', {
 
         this.getTable().getStore().each(function(record) {
             commande.push({
-                "_id":0,
+                "_id":record.get("_id"),
                 "name":record.get("name"),
                 "desc":record.get("desc"),
                 "img":record.get("img"),

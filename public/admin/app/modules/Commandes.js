@@ -43,21 +43,11 @@ function(namespace, Backbone) {
 
 
   Commandes.Views.EnCours = Backbone.View.extend({
-    template: urlTpls+"commandes/encours.html",
     el:'.commandesContainer',
     render: function(done) {
-      var view = this;
-      // Fetch the template, render it to the View element and call done.
-      namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
-        // If a done function is passed, call it with the element
-        if (_.isFunction(done)) {
-          done(view.el);
-        }
-        $("#navCommandes li").removeClass("active");
-        $("#commandesEnCoursli").addClass("active");
-        view.getPendingOrders();
-      });
+      $("#navCommandes li").removeClass("active");
+      $("#commandesEnCoursli").addClass("active");
+      this.getPendingOrders();
     },
     getPendingOrders: function() {
       var that = this;
@@ -92,20 +82,11 @@ function(namespace, Backbone) {
 
 
   Commandes.Views.Preparation = Backbone.View.extend({
-    template: urlTpls+"commandes/preparation.html",
     el:'.commandesContainer',
-    render: function(done) {
-      var view = this;
-      // Fetch the template, render it to the View element and call done.
-      namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
-        // If a done function is passed, call it with the element
-        if (_.isFunction(done)) {
-          done(view.el);
-        }
-        $("#navCommandes li").removeClass("active");
-        $("#commandesPreparationsli").addClass("active");
-      });
+    render: function(done) { 
+      $("#navCommandes li").removeClass("active");
+      $("#commandesPreparationsli").addClass("active");
+      this.getPreparingOrders();
     },
     getPreparingOrders: function() {
       var that = this;
@@ -128,7 +109,7 @@ function(namespace, Backbone) {
           _.each(retour.dishes, function(plat) {
               html+='<li>'+plat.name+'</li>';
           });
-          html+='</ul></td><td><a href="admin/commandes/valider/'+retour._id+'" class="btn">Valider cette commande</a></tr>';
+          html+='</ul></td><td><a href="admin/commandes/valider/'+retour._id+'" class="btn">Cette commande est prête</a></td></tr>';
 
           html+="</tbody>";
           $(that.el).html($(html));
@@ -139,19 +120,77 @@ function(namespace, Backbone) {
   });
 
   Commandes.Views.Validees = Backbone.View.extend({
-    template: urlTpls+"commandes/validees.html",
     el:'.commandesContainer',
     render: function(done) {
-      var view = this;
-      // Fetch the template, render it to the View element and call done.
-      namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
-        // If a done function is passed, call it with the element
-        if (_.isFunction(done)) {
-          done(view.el);
-        }
-        $("#navCommandes li").removeClass("active");
-        $("#commandesValideesli").addClass("active");
+      $("#navCommandes li").removeClass("active");
+      $("#commandesValideesli").addClass("active");
+      this.getValidatedOrders();
+    },
+    getValidatedOrders: function() {
+      var that = this;
+
+      $.ajax({
+        type: 'GET',
+        url: '/GetOrdersReady',
+        success: function() {
+          var html = '<h3>Commandes prêtes</h3><br/><table class="table table-bordered"><thead><tr><th>Table</th><th>Contenu de la commande</th><th>Valider les commande</th></thead><tbody>';
+          var retour = {
+              _id:203,
+              table:3,
+              dishes:[
+                {name:"Test", type:"toto",_id:0},
+                {name:"Teszxdt", type:"totdezo",_id:0},
+                {name:"dezTest", type:"totoezz",_id:0}
+              ]
+          };
+          html+="<tr><td>"+retour.table+'</td><td><ul>';
+          _.each(retour.dishes, function(plat) {
+              html+='<li>'+plat.name+'</li>';
+          });
+          html+='</ul></td><td><a href="admin/commandes/livrer/'+retour._id+'" class="btn">Livrer cette commande</a></td></tr>';
+
+          html+="</tbody>";
+          $(that.el).html($(html));
+        },
+        dataType: 'json'
+      });
+    }
+  });
+
+  Commandes.Views.Livrees = Backbone.View.extend({
+    el:'.commandesContainer',
+    render: function(done) {
+      $("#navCommandes li").removeClass("active");
+      $("#commandesLivreesli").addClass("active");
+      this.getDeliveredOrders();
+    },
+    getDeliveredOrders: function() {
+      var that = this;
+
+      $.ajax({
+        type: 'GET',
+        url: '/GetDeliveredOrders',
+        success: function() {
+          var html = '<h3>Commandes livrées</h3><br/><table class="table table-bordered"><thead><tr><th>Table</th><th>Contenu de la commande</th></thead><tbody>';
+          var retour = {
+              _id:203,
+              table:3,
+              dishes:[
+                {name:"Test", type:"toto",_id:0},
+                {name:"Teszxdt", type:"totdezo",_id:0},
+                {name:"dezTest", type:"totoezz",_id:0}
+              ]
+          };
+          html+="<tr><td>"+retour.table+'</td><td><ul>';
+          _.each(retour.dishes, function(plat) {
+              html+='<li>'+plat.name+'</li>';
+          });
+          html+='</ul></td></tr>';
+
+          html+="</tbody>";
+          $(that.el).html($(html));
+        },
+        dataType: 'json'
       });
     }
   });
