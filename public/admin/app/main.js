@@ -22,8 +22,10 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       "admin/commandes":"commandes",
       "admin/commandes/preparation":"commandesPreparation",
       "admin/commandes/validees":"commandesValidees",
+      "admin/commandes/livrees":"commandesLivrees",
       "admin/commandes/preparer/:id":"commandesPreparer",
       "admin/commandes/valider/:id":"commandesValider",
+      "admin/commandes/livrer/:id":"commandesLivrer",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
@@ -68,6 +70,9 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
     commandesPreparation: function() {
       new Commandes.Views.Preparation().render();
     },
+    commandesLivrees: function() {
+      new Commandes.Views.Livrees().render();
+    },
     commandesPreparer: function(id) {
       var that = this;
       $.ajax({
@@ -77,13 +82,11 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
           idOrder:id
         },
         success: function(retour) {
-          that.commandes("La commande est maintenant en préparation.");
-          Backbone.history.navigate("/admin/commandes/preparations", false);
+          Backbone.history.navigate("/admin/commandes/preparation", true);
         }
       });
     },
     commandesValider: function(id) {
-      alert(id);
       var that = this;
       $.ajax({
         type: 'POST',
@@ -92,8 +95,20 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
           idOrder:id
         },
         success: function(retour) {
-          that.commandes("La commande est maintenant validée.");
-          Backbone.history.navigate("/admin/commandes/validees", false);
+          Backbone.history.navigate("/admin/commandes/validees", true);
+        }
+      });
+    },
+    commandesLivrer: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        url: '/SetOrderDelivered',
+        params:{
+          idOrder:id
+        },
+        success: function(retour) {
+          Backbone.history.navigate("/admin/commandes/livrees", true);
         }
       });
     },
