@@ -20,7 +20,10 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       "index": "index",
       "carte":"carte",
       "admin/commandes":"commandes",
+      "admin/commandes/preparation":"commandesPreparation",
       "admin/commandes/validees":"commandesValidees",
+      "admin/commandes/preparer/:id":"commandesPreparer",
+      "admin/commandes/valider/:id":"commandesValider",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
@@ -61,6 +64,38 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
     },
     commandesValidees: function() {
       new Commandes.Views.Validees().render();
+    },
+    commandesPreparation: function() {
+      new Commandes.Views.Preparation().render();
+    },
+    commandesPreparer: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        url: '/SetOrderInProgress',
+        params:{
+          idOrder:id
+        },
+        success: function(retour) {
+          that.commandes("La commande est maintenant en préparation.");
+          Backbone.history.navigate("/admin/commandes/preparations", false);
+        }
+      });
+    },
+    commandesValider: function(id) {
+      alert(id);
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        url: '/SetOrderReady',
+        params:{
+          idOrder:id
+        },
+        success: function(retour) {
+          that.commandes("La commande est maintenant validée.");
+          Backbone.history.navigate("/admin/commandes/validees", false);
+        }
+      });
     },
     carte: function() {
       new Carte.Views.Accueil().render();

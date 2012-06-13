@@ -25,7 +25,10 @@ app.configure(function(){
 
 /* bdd */
 var server = new Server('localhost', 27017, {auto_reconnect: true});
+http://ca.linkedin.com/in/florentlamoureux/en
 var db = new Db('projectDB', server);
+
+
 
 db.open(function(err, db) {
   if(!err) {
@@ -384,8 +387,10 @@ app.get('/GetOrders', function(req, res){
 });
 
 app.post('/CreateOrder', function(req, res){
+
+	var doc1 = req.body.order;
+
 	db.createCollection('orders', function(err, collection) {
-		var doc1 = req.body.order;
 		logNow(doc1);
 		collection.insert(doc1);
 		res.send("ok");
@@ -394,7 +399,7 @@ app.post('/CreateOrder', function(req, res){
 
 app.get('/GetOrdersWaiting', function(req, res){
 	db.collection('orders', function(err, ordersCollection){
-		ordersCollection.find({status:parseInt(0)}).toArray(function(err, doc){
+		ordersCollection.find({status:"0"}).toArray(function(err, doc){
 			res.send(doc);
 		});
 	});
