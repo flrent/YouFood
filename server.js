@@ -58,7 +58,7 @@ app.get("/GetAllApp", function(req, res){
 		restoCollection.find({}).toArray(function(err, restoDoc){
 			restoTexts = restoDoc[0];
 			db.collection("menus", function(err, menusCollection){
-				menusCollection.findOne({active:"1"}, {fields:{"dishes":1}}, function(err, menuDoc){
+				menusCollection.findOne({active:parseInt(1)}, {fields:{"dishes":1}}, function(err, menuDoc){
 					console.log(menuDoc);
 					db.collection("dishes", function(err, dishesCollection){
 						dishesCollection.find({_id:{$in: menuDoc.dishes}}).toArray(function(err, dishesDoc){
@@ -373,9 +373,25 @@ app.get('/GetOrders', function(req, res){
 
 app.post('/CreateOrder', function(req, res){
 	db.createCollection('orders', function(err, collection) {
-		var doc1 = req.body["orderObject"];
-		collection.insert(doc1);
-		res.send(doc1);
+		var doc1 = req.body.order;
+		collection.insert(doc1, {safe:true}, function(err, doc){
+			if(!err){
+				res.send(doc1);
+			}
+			else{
+				logNow(err);
+				res.send("Unable to create an order");
+			}
+		});
+		
+	});
+});
+
+app.get('/GetOrdersWaiting', function(req, res){
+	db.collection('orders', function(err, ordersCollection){
+		ordersCollection.find({status:parseInt(0)}).toArray(function(err, doc){
+			res.send(doc);
+		});
 	});
 });
 
@@ -388,6 +404,14 @@ app.post('/SetOrderWaiting', function(req, res){
 	});
 });
 
+app.get('/GetOrdersInProgress', function(req, res){
+	db.collection('orders', function(err, ordersCollection){
+		ordersCollection.find({status:parseInt(1)}).toArray(function(err, doc){
+			res.send(doc);
+		});
+	});
+});
+
 app.post('/SetOrderInProgress', function(req, res){
 	var idOrder = req.body["idOrder"];
 	var orders = db.collection("orders", function(err, collection){
@@ -397,11 +421,27 @@ app.post('/SetOrderInProgress', function(req, res){
 	});
 });
 
+app.get('/GetOrdersReady', function(req, res){
+	db.collection('orders', function(err, ordersCollection){
+		ordersCollection.find({status:2}).toArray(function(err, doc){
+			res.send(doc);
+		});
+	});
+});
+
 app.post('/SetOrderReady', function(req, res){
 	var idOrder = req.body["idOrder"];
 	var orders = db.collection("orders", function(err, collection){
-		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":2}}, function(err, orderDoc){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":parseInt(2)}}, function(err, orderDoc){
 			res.send(orderDoc);
+		});
+	});
+});
+
+app.get('/GetDeliveredOrders', function(req, res){
+	db.collection('orders', function(err, ordersCollection){
+		ordersCollection.find({status:3}).toArray(function(err, doc){
+			res.send(doc);
 		});
 	});
 });
@@ -409,7 +449,7 @@ app.post('/SetOrderReady', function(req, res){
 app.post('/SetOrderDelivered', function(req, res){
 	var idOrder = req.body["idOrder"];
 	var orders = db.collection("orders", function(err, collection){
-		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":3}}, function(err, orderDoc){
+		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":parseInt(3)}}, function(err, orderDoc){
 			res.send(orderDoc);
 		});
 	});
