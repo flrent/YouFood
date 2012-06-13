@@ -226,6 +226,23 @@ app.post('/UpdateMenu', function(req, res){
 	});
 });
 
+app.post('/SetMenuActive', function(req, res){
+	var idMenu = req.body["idMenu"];
+	var menus = db.collection("menus", function(err, collection){
+		collection.update({}, {$set:{active:0}},  {safe:true, multi:true}, function(err, menuDocs){
+			collection.findAndModify({_id:new ObjectId(idMenu)}, {safe:true}, {$set:{active:1}}, function(err, menuDoc){
+				if(!err){
+					res.send("activated");
+				}
+				else{
+					console.log(err);
+					res.send("Failed to activate the menu");
+				}
+			});
+		});
+	});
+});
+
 app.get('/GetDishes', function(req, res){
 	var dishes = db.collection('dishes', function(err, dishCollection){
 		dishCollection.find().toArray(function(err, docs){
