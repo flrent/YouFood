@@ -126,9 +126,10 @@ function(namespace, Backbone) {
         type: 'GET',
         url: '/GetDishes',
         success: function(retour) {
-          var html = "<thead><tr><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th><th>Modifier</th></tr></thead><tbody>";
+          var typeText = ["Entrée","Plat","Dessert","Boisson"];
+          var html = "<thead><tr><th>Nom</th><th>Description</th><th>Photo</th><th>Prix</th><th>Type</th><th>Modifier</th></tr></thead><tbody>";
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj.name+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.price+"</td><td>"+'<a class="btn" href="#/EditDish/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveDish/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            html+="<tr><td>"+obj.name+"</td><td>"+obj.desc+"</td><td></td><td>"+obj.price+"</td><td>"+typeText[obj.type]+"</td><td>"+'<a class="btn" href="#/EditDish/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveDish/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
           });
           html+="</tbody>";
           $(that.el2).html($(html));
@@ -168,7 +169,7 @@ function(namespace, Backbone) {
           view.el.innerHTML = tmpl(produit);
         }
         else {
-          view.el.innerHTML = tmpl({name:"",img:"",_id:0,desc:"",price:""});
+          view.el.innerHTML = tmpl({name:"",img:"",_id:0,desc:"",price:"", type:0});
         }
 
         // If a done function is passed, call it with the element
@@ -191,6 +192,7 @@ function(namespace, Backbone) {
             name:$("#addProduitNom").val().trim(),
             desc:$("#addProduitDesc").val().trim(),
             img:$("#addProduitPhoto").val().trim(),
+            type:$("#addProduitType").val().trim(),
             price:$("#addProduitPrix").val().trim() 
           }
         };

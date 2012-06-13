@@ -290,7 +290,7 @@ app.post('/UpdateDish', function(req, res){
 	logNow("Modification du dish "+id);
 	logNow("Reception de "+dish);
 	db.collection("dishes", function(err, collection){
-		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:dish.name, price:dish.price, desc:dish.desc, img:dish.img}}, function(err, doc){
+		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:dish.name, price:dish.price, desc:dish.desc, img:dish.img, type:dish.type}}, function(err, doc){
 			if(!err){
 				res.send(doc);
 			}

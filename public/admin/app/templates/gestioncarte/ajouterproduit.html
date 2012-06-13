@@ -26,6 +26,17 @@
       <input type="text" class="input-xlarge" id="addProduitPrix" value="<%= price %>">
     </div>
   </div>
+  <div class="control-group">
+    <label class="control-label" for="addProduitType">Type</label>
+    <div class="controls">
+      <select id="addProduitType">
+        <option value="0">Entrée</option>
+        <option value="1">Plat</option>
+        <option value="2">Dessert</option>
+        <option value="3">Boisson</option>
+      </select>
+    </div>
+  </div>
   <div class="form-actions">
     <button type="button" class="btn btn-primary" id="addProduitSubmit">Save changes</button>
     <a class="btn"  id="cancelProduit" href="/getDishes">Cancel</a>
