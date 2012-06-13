@@ -42,7 +42,7 @@ Ext.define('YouFood.controller.Table', {
 
         this.getTable().getStore().each(function(record) {
             commande.push({
-                _id:record.get("_id"),
+                _id:0,
                 name:record.get("name"),
                 desc:record.get("desc"),
                 img:record.get("img"),
@@ -51,16 +51,15 @@ Ext.define('YouFood.controller.Table', {
             });
             console.log(record.get("name")+ " ajouté à la commande");
         }, this);
-        var order = {  
-            "order": {
-                table: localStorage.getItem("table"),
-                dishes:commande
-            }
-        };
+
           Ext.Ajax.request({
             url: '/CreateOrder',
             method:'POST',
-            params: order,
+            params: {
+                order:{
+                    table: localStorage.getItem("table")
+                }
+            },
             success: function(response){
                 var text = response.responseText;
 

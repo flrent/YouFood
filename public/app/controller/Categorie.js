@@ -23,6 +23,8 @@ Ext.define('YouFood.controller.Categorie', {
                     data:{
                         "name":record.get("name"),
                         "img":record.get("img"),
+                        "type":record.get("type"),
+                        "_id":record.get("_id"),
                         "desc":record.get("desc"),
                         "price":record.get("price"),
                     }

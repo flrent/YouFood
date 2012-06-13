@@ -18,7 +18,7 @@ Ext.define('YouFood.controller.Produit', {
         var that = this;
         var msg = new Ext.MessageBox();
         var produit = that.getProduit().getData();
-
+        
         if(this.getTablePanel().getCommandeStatus()==0) {  
           msg.show({
              title: 'Your Meal',

@@ -386,16 +386,9 @@ app.get('/GetOrders', function(req, res){
 app.post('/CreateOrder', function(req, res){
 	db.createCollection('orders', function(err, collection) {
 		var doc1 = req.body.order;
-		collection.insert(doc1, {safe:true}, function(err, doc){
-			if(!err){
-				res.send(doc1);
-			}
-			else{
-				logNow(err);
-				res.send("Unable to create an order");
-			}
-		});
-		
+		logNow(doc1);
+		collection.insert(doc1);
+		res.send("ok");
 	});
 });
 

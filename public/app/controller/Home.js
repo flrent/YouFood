@@ -31,7 +31,7 @@ Ext.define('YouFood.controller.Home', {
                 {
                     xtype:'categoriedataview',
                     store:{
-                        fields:['name','desc','img','price','_id'],
+                        fields:['name','desc','type','img','price','_id'],
                         data:record.get("dishes")
                     }
                 }

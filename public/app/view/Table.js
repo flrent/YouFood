@@ -48,16 +48,7 @@ Ext.define('YouFood.view.Table', {
 			 			id:'tabledataview',
 			 			xtype:'tabledataview',
 			 			store:{
-			 				autoLoad:true,
-			 				fields:['name','price','desc','img'],
-			 				proxy: {
-			 					type:'ajax',
-			 					url:'/GetDishes',
-			 					reader: {
-			 						type:"json",
-			 						rootProperty:'table'
-			 					}
-			 				}
+			 				fields:['_id', 'name','price','desc','img','type']
 			 			}
 			 		}
 		 		]
