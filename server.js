@@ -399,7 +399,7 @@ app.post('/CreateOrder', function(req, res){
 
 app.get('/GetOrdersWaiting', function(req, res){
 	db.collection('orders', function(err, ordersCollection){
-		ordersCollection.find({status:"0"}).toArray(function(err, doc){
+		ordersCollection.find({status:parseInt(0)}).toArray(function(err, doc){
 			res.send(doc);
 		});
 	});
@@ -433,7 +433,7 @@ app.post('/SetOrderInProgress', function(req, res){
 
 app.get('/GetOrdersReady', function(req, res){
 	db.collection('orders', function(err, ordersCollection){
-		ordersCollection.find({status:2}).toArray(function(err, doc){
+		ordersCollection.find({status:parseInt(2)}).toArray(function(err, doc){
 			res.send(doc);
 		});
 	});
@@ -450,7 +450,7 @@ app.post('/SetOrderReady', function(req, res){
 
 app.get('/GetDeliveredOrders', function(req, res){
 	db.collection('orders', function(err, ordersCollection){
-		ordersCollection.find({status:3}).toArray(function(err, doc){
+		ordersCollection.find({status:parseInt(3)}).toArray(function(err, doc){
 			res.send(doc);
 		});
 	});
