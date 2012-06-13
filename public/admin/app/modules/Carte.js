@@ -300,9 +300,13 @@ function(namespace, Backbone) {
         type: 'GET',
         url: '/GetMenus',
         success: function(retour) {
-          var html = "<thead><tr><th>Nom</th><th>Modifier</th></tr></thead><tbody>";
+          var html = "<thead><tr><th>Nom</th><th>Etat</th><th>Activer le menu</th><th>Modifier</th></tr></thead><tbody>";
+          var types = ['Inactif','Actif'];
+
           _.each(retour, function(obj){ 
-            html+="<tr><td>"+obj.name+"</td><td>"+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a>'+"</td></tr>";
+            if(obj.active==1) var activeOrNotBtn = "<td></td>";
+            else var activeOrNotBtn = '<td><a href="#/SetActiveMenu/'+obj._id+'" class="btn"><i class="icon-ok-sign"></i>Activer ce menu</a></td>';
+            html+="<tr><td>"+obj.name+'</td><td>'+types[obj.active]+'</td>'+activeOrNotBtn+'<td>'+'<a class="btn" href="#/EditMenu/'+obj._id+'"><i class="icon-pencil"></i></a><a class="btn" href="#/RemoveMenu/'+obj._id+'"><i class="icon-remove"></i></a></td></tr>';
           });
           html+="</tbody>";
           $(that.el2).html($(html));
@@ -348,7 +352,8 @@ function(namespace, Backbone) {
       var menu = {
         menu: {
           _id:$("#addMenuId").val().trim(),
-          name:$("#addMenuNom").val().trim()
+          name:$("#addMenuNom").val().trim(),
+          active:0
         }
       };
 

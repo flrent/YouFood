@@ -60,13 +60,18 @@ Ext.define('YouFood.view.Home', {
 			 			store:{
 			 				autoLoad:true,
 							fields:['name','type','dishes', 'desc','img', '_id', 'price'],
-			 				hasMany:['menu'],
+			 				hasMany:['dishes'],
 			 				proxy: {
 			 					type:'ajax',
-			 					url:'/mock.json',
+			 					url:'/GetAllApp',
 			 					reader: {
 			 						type:"json",
 			 						rootProperty:'menu'
+			 					}
+			 				},
+			 				listeners:{
+			 					'load':function() {
+			 						console.log(this);
 			 					}
 			 				}
 			 			}

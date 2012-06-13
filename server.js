@@ -50,10 +50,10 @@ app.get('/', function(req, res){
 app.get("/GetAllApp", function(req, res){
 	var restoTexts;
 	var menu = new Array();
-	var entrees;
-	var plats;
-	var desserts;
-	var boissons;
+	var entrees = {};
+	var plats = {};
+	var desserts = {};
+	var boissons = {};
 	db.collection("restaurant_infos", function(err, restoCollection){
 		restoCollection.find({}).toArray(function(err, restoDoc){
 			restoTexts = restoDoc[0];
@@ -64,10 +64,22 @@ app.get("/GetAllApp", function(req, res){
 						dishesCollection.find({_id:{$in: menuDoc.dishes}}).toArray(function(err, dishesDoc){
 							var menuDishes = dishesDoc;
 							console.log(menuDishes);
-							entrees = menuDishes.filter( function(item){return (item.type==0);} );
-							plats = menuDishes.filter( function(item){return (item.type==1);} );
-							desserts = menuDishes.filter( function(item){return (item.type==2);} );
-							boissons = menuDishes.filter( function(item){return (item.type==3);} );
+							entrees = {
+								name:'Starters',
+								dishes: menuDishes.filter( function(item){return (item.type==0);} )
+							};
+							plats = {
+								name:'Dishes',
+								dishes: menuDishes.filter( function(item){return (item.type==1);} )
+							};
+							desserts = {
+								name:'Deserts',
+								dishes: menuDishes.filter( function(item){return (item.type==2);} )
+							};
+							boissons = {
+								name:'Drinks',
+								dishes: menuDishes.filter( function(item){return (item.type==3);} )
+							};
 							menu.push(entrees);
 							menu.push(plats);
 							menu.push(desserts);

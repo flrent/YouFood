@@ -20,12 +20,14 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       "index": "index",
       "carte":"carte",
       "admin/commandes":"commandes",
+      "admin/commandes/validees":"commandesValidees",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
       "/EditDish/:id":'editDish',
       "/RemoveMenu/:id":'removeMenu',
       "/EditMenu/:id":'editMenu',
+      '/SetActiveMenu/:id':'setActiveMenu',
       "addDishToMenu/:id":'addDishToMenu',
       "removeDishFromMenu/:idmenu/:iddish":'removeDishFromMenu'
     },
@@ -56,6 +58,9 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
     commandes: function() {
       new Commandes.Views.Accueil().render();
       Backbone.history.navigate("/admin/commandes", false);
+    },
+    commandesValidees: function() {
+      new Commandes.Views.Validees().render();
     },
     carte: function() {
       new Carte.Views.Accueil().render();
@@ -170,6 +175,21 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
           that.getComposition("Suppression réussie !");
         }
       });
+    },
+    setActiveMenu: function(id) {
+      var view=this;
+      
+        $.ajax({
+          type: 'POST',
+          data:{
+            idMenu:id
+          },
+          url: '/SetMenuActive',
+          success: function(retour) {
+            view.getMenus("Menu activé !");
+            Backbone.history.navigate("/admin", false);
+          }
+        });
     }
   });
 

@@ -29,10 +29,12 @@ Ext.define('YouFood.controller.Settings', {
     },
     changeTable: function() {
         var t = this.getNumeroTableChamp().getValue();
-        if(!t) t = 0;
-        this.getSettingsPanel().numeroTable = t;
-        localStorage.setItem("table", t);
-        this.getNumeroTablePanel().setData({table:t});
+        if(!t) {
+            t = 0;
+            this.getSettingsPanel().numeroTable = t;
+            localStorage.setItem("table", t);
+            this.getNumeroTablePanel().setData({table:t});
+        }
     },
     changeServeur: function() {
         var s = this.getServeurIdentifiantChamp().getValue();
@@ -43,7 +45,7 @@ Ext.define('YouFood.controller.Settings', {
     launch: function() {
         this.getIdentifiantServeurPanel().setData({serveur:"Jean"});
         this.getNumeroTablePanel().setData({table:2});
-        localStorage.setItem("table", t);
+        localStorage.setItem("table", 2);
     },
     changeButton: function() {
         this.changeTable();
