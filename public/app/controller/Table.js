@@ -54,8 +54,10 @@ Ext.define('YouFood.controller.Table', {
 
         var order = {
             "table":localStorage.getItem("table"),
+            "serveurId":localStorage.getItem("serveurId"),
             "dishes":commande,
-            "status":0
+            "status":0,
+            "orderTime":new Date()
         };
 
         Ext.Ajax.request({

@@ -436,7 +436,7 @@ function(namespace, Backbone) {
 
 
                 menuSelect+='<a class="btn pull-right" href="addDishToMenu/'+m._id+'">Ajouter ce produit au menu '+m.name+'</a>';
-                menuSelect+='<select id="select'+m._id+'" class="pull-right">'+options+'</select></div>';
+                menuSelect+='<select id="select'+m._id+'" class="pull-right">'+options+'</select></div><div class="clear"></div>';
 
                 
 

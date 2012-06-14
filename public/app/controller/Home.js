@@ -6,7 +6,8 @@ Ext.define('YouFood.controller.Home', {
             accueil:'homepanel',
             homeDataView: '#homedataview',
             imageResto:'homepanel img',
-            boxes:'homepanel .box'
+            boxes:'homepanel .box',
+            homeTitle:'homepanel #homeTitleText'
         },
         control: {
             '#homedataview': {
@@ -44,6 +45,19 @@ Ext.define('YouFood.controller.Home', {
         Ext.Anim.run(this.getImageResto(), 'fade', {
             out: false,
            duration: 3000
+        });
+
+
+        Ext.Ajax.request({
+            url: '/GetRestaurantInfos',
+            method:'GET',
+            success: function(response){
+                var text = JSON.parse(response.responseText);
+                this.getHomeTitle().setHtml('<h1>'+text.name+'</h1><p>'+text.desc+'</p>');
+            },
+            contentType:'application/json; charset=utf-8',
+            dataType:'json',
+            scope:this
         });
     }
 });

@@ -20,22 +20,10 @@ Ext.define('YouFood.view.Home', {
 	 							items:[
 	 								{
 	 									flex:1.5,
+	 									id:'homeTitleText',
 					 					html:[
-							 					'<h1>Welcome to our restaurant, enjoy sitting in one of the best in town.</h1>',
-							 					'<p>Let your fingers guide you through our menu, select your choice and order directly <br/> from our tab.</p>',
-							 				
+							 					'<h1></h1>'							 				
 							 			].join('')
-							 		},
-							 		{
-							 			flex:0.5,
-							 			items:[
-							 				{
-							 					html:[
-							 						'<h3>This is the vietnam week</h3>',
-							 						'<p>This week we are proud to announce that we are launching officially the vietnamese week. Enjoy it all you can !</p>'
-							 					].join('')
-							 				}
-							 			]
 							 		}
 	 							]
 	 						}
@@ -67,11 +55,6 @@ Ext.define('YouFood.view.Home', {
 			 					reader: {
 			 						type:"json",
 			 						rootProperty:'menu'
-			 					}
-			 				},
-			 				listeners:{
-			 					'load':function() {
-			 						console.log(this);
 			 					}
 			 				}
 			 			}

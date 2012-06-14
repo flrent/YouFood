@@ -424,8 +424,10 @@ app.get('/GetOrdersInProgress', function(req, res){
 
 app.post('/SetOrderInProgress', function(req, res){
 	var idOrder = req.body["idOrder"];
+	logNow("Nouvelle commande à mettre a inProgress, id="+idOrder);
 	var orders = db.collection("orders", function(err, collection){
 		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":1}}, function(err, orderDoc){
+			logNow("Order in progress ok.");
 			res.send(orderDoc);
 		});
 	});

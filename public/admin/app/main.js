@@ -8,10 +8,12 @@ require([
   // Modules
   "modules/Accueil",
   "modules/Carte",
-  "modules/Commandes"
+  "modules/Commandes",
+  "modules/Serveurs",
+  "modules/Statistiques"
 ],
 
-function(namespace, $, Backbone, Accueil, Carte, Commandes) {
+function(namespace, $, Backbone, Accueil, Carte, Commandes, Serveurs, Statistiques) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -20,12 +22,18 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       "index": "index",
       "carte":"carte",
       "admin/commandes":"commandes",
+      "admin/commandes/toutes":"commandesToutes",
       "admin/commandes/preparation":"commandesPreparation",
       "admin/commandes/validees":"commandesValidees",
       "admin/commandes/livrees":"commandesLivrees",
       "admin/commandes/preparer/:id":"commandesPreparer",
       "admin/commandes/valider/:id":"commandesValider",
       "admin/commandes/livrer/:id":"commandesLivrer",
+      "admin/serveurs":"serveurs",
+      "admin/serveurs/add":"serveursAdd",
+      "admin/statistiques":"statistiques",
+      "admin/statistiques/serveurs":"statsServeurs",
+      "admin/statistiques/tables":"statsTables",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
@@ -73,12 +81,16 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
     commandesLivrees: function() {
       new Commandes.Views.Livrees().render();
     },
+    commandesToutes: function() {
+      new Commandes.Views.Toutes().render();
+    },
     commandesPreparer: function(id) {
+      alert(id);
       var that = this;
       $.ajax({
         type: 'POST',
         url: '/SetOrderInProgress',
-        params:{
+        data:{
           idOrder:id
         },
         success: function(retour) {
@@ -91,7 +103,7 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       $.ajax({
         type: 'POST',
         url: '/SetOrderReady',
-        params:{
+        data:{
           idOrder:id
         },
         success: function(retour) {
@@ -104,13 +116,28 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes) {
       $.ajax({
         type: 'POST',
         url: '/SetOrderDelivered',
-        params:{
+        data:{
           idOrder:id
         },
         success: function(retour) {
           Backbone.history.navigate("/admin/commandes/livrees", true);
         }
       });
+    },
+    serveurs: function() {
+      new Serveurs.Views.Accueil().render();
+    },
+    serveursAdd: function() {
+      new Serveurs.Views.Add().render();
+    },
+    statistiques: function() {
+      new Statistiques.Views.Accueil().render();
+    },
+    statsServeurs: function() {
+      new Statistiques.Views.Serveurs().render();
+    },
+    statsProduits: function() {
+      new Statistiques.Views.Produits().render();
     },
     carte: function() {
       new Carte.Views.Accueil().render();

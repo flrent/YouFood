@@ -28,7 +28,8 @@ Ext.define('YouFood.view.SettingsPanel', {
 				            items: [
 				                {
 				                    xtype: 'passwordfield',
-				                    name : 'password'
+				                    name : 'password',
+				                    id:'settingsPassword'
 				                },
 				                {
 				                	xtype:'button',
@@ -86,7 +87,7 @@ Ext.define('YouFood.view.SettingsPanel', {
 					            instructions: 'Change the waiter id of this tab.',
 					            items: [
 					                {
-					                    xtype: 'numberfield',
+					                    xtype: 'textfield',
 					                    name : 'serveurTable',
 					                    id:'serveurIdentifiantChamp'
 					                },
