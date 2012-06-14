@@ -85,7 +85,7 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes, Serveurs, Statistiqu
       new Commandes.Views.Toutes().render();
     },
     commandesPreparer: function(id) {
-      alert(id);
+      
       var that = this;
       $.ajax({
         type: 'POST',
