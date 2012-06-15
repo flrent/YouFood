@@ -378,6 +378,15 @@ app.get('/GetOrders', function(req, res){
 	});
 });
 
+app.get('/RemoveOrder/:id', function(req, res){
+	var id = req.params.id;
+	var order = db.collection('orders', function(err, ordersCollection){
+		ordersCollection.findAndRemove({_id:new ObjectId(id)}, function(err, doc){
+			res.send("removed");
+		});
+	});
+});
+
 app.post('/CreateOrder', function(req, res){
 
 	var doc1 = req.body.order;
@@ -559,8 +568,8 @@ app.get('/DishSelected/:idDish/:numTable', function(req, res){
 				dish : dishDoc,
 				table : parseInt(numTable)
 			};
-			db.createCollection("dishesSelected", function(err, viewedCollection){
-				viewedCollection.insert(stat, {safe:true}, function(err, doc){
+			db.createCollection("dishesSelected", function(err, selectedCollection){
+				selectedCollection.insert(stat, {safe:true}, function(err, doc){
 					if(!err){
 						res.send("stat saved");
 					}
@@ -571,6 +580,12 @@ app.get('/DishSelected/:idDish/:numTable', function(req, res){
 				});
 			});
 		});
+	});
+});
+
+app.get('/GetVievedStats', function(req, res){
+	db.collection("dishesViewed", function(err, viewedCollection){
+
 	});
 });
 
