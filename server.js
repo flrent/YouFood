@@ -381,6 +381,15 @@ app.get('/GetOrders', function(req, res){
 	});
 });
 
+app.get('/RemoveOrder/:id', function(req, res){
+	var id = req.params.id;
+	var order = db.collection('orders', function(err, ordersCollection){
+		ordersCollection.findAndRemove({_id:new ObjectId(id)}, function(err, doc){
+			res.send("removed");
+		});
+	});
+});
+
 app.post('/CreateOrder', function(req, res){
 
 	var doc1 = req.body.order;
@@ -526,6 +535,60 @@ app.post('/SetMultipliers', function(req, res){
 				res.send("Could not update the tax informations.");
 			}
 		});
+	});
+});
+
+app.get('/DishViewed/:idDish/:numTable', function(req, res){
+	var idDish = req.params.idDish;
+	var numTable = req.params.numTable;
+	db.collection("dishes", function(err, dishesCollection){
+		dishesCollection.findOne({_id: new ObjectId(idDish)}, function(err, dishDoc){
+			var stat = {
+				dish : dishDoc,
+				table : parseInt(numTable)
+			};
+			db.createCollection("dishesViewed", function(err, viewedCollection){
+				viewedCollection.insert(stat, {safe:true}, function(err, doc){
+					if(!err){
+						res.send("stat saved");
+					}
+					else{
+						console.log(err);
+						res.send("couldnt save the viewed dish.")
+					}
+				});
+			});
+		});
+	});
+});
+
+app.get('/DishSelected/:idDish/:numTable', function(req, res){
+	var idDish = req.params.idDish;
+	var numTable = req.params.numTable;
+	db.collection("dishes", function(err, dishesCollection){
+		dishesCollection.findOne({_id: new ObjectId(idDish)}, function(err, dishDoc){
+			var stat = {
+				dish : dishDoc,
+				table : parseInt(numTable)
+			};
+			db.createCollection("dishesSelected", function(err, selectedCollection){
+				selectedCollection.insert(stat, {safe:true}, function(err, doc){
+					if(!err){
+						res.send("stat saved");
+					}
+					else{
+						console.log(err);
+						res.send("couldnt save the selected dish.")
+					}
+				});
+			});
+		});
+	});
+});
+
+app.get('/GetVievedStats', function(req, res){
+	db.collection("dishesViewed", function(err, viewedCollection){
+
 	});
 });
 
