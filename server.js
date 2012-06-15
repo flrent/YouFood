@@ -22,7 +22,10 @@ app.use(require('express').bodyParser());
 io.sockets.on('connection', function (socket) {
 
   socket.on('callWaiter', function (data) {
-  	socket.broadcast.emit("calledWaiter", {message:"salut"});
+  	socket.broadcast.emit("calledWaiter", data);
+  });
+  socket.on('newOrder', function (data) {
+  	socket.broadcast.emit("newOrder", data);
   });
 
 });

@@ -26,17 +26,8 @@ Ext.define('YouFood.controller.Table', {
         }
     },
     callWaiter: function() {
-        socket.emit('callWaiter', { my: 'Florent' });
+        socket.emit('callWaiter', { table: localStorage.getItem("table"), serveurId: localStorage.getItem("serveurId") });
         Ext.Msg.alert('Waiter called', 'Thank you, a waiter will come see you as soon as possible !' , Ext.emptyFn);
-/*
-         Ext.data.JsonP.request({
-            url: 'http://localhost:3000/',
-            callbackKey: 'callback',
-            success: function(result, request) {
-                var text = response.data;
-                Ext.Msg.alert('Commande envoyée', text, Ext.emptyFn);
-            }
-        });*/
     },
     validerCommande: function() {
         var commande = [];
@@ -67,6 +58,8 @@ Ext.define('YouFood.controller.Table', {
             jsonData: {order:order},
             success: function(response){
                 var text = response.responseText;
+
+                socket.emit('newOrder', { table: localStorage.getItem("table"), order:order });
 
                 Ext.Msg.alert('Meal ordered', "Thank you ! Your meal has been successfully ordered. We will bring it to your as soon as it is ready.", Ext.emptyFn);
                 this.getTablePanel().setCommandeStatus(1);

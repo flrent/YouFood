@@ -53,10 +53,17 @@ Ext.define('YouFood.controller.Settings', {
         this.getIdentifiantServeurPanel().setData({serveur:s});
     },
     launch: function() {
-        this.getIdentifiantServeurPanel().setData({serveur:"aucun"});
-        this.getNumeroTablePanel().setData({table:2});
-        localStorage.setItem("table", 2);
-        localStorage.setItem("serveurId", "aucun");
+
+        var tls = localStorage.getItem("table");
+        var sls = localStorage.getItem("serveurId");
+        if(!tls) tls = 2;
+        if(!sls) sls = "aucun";
+
+        localStorage.setItem("table", tls);
+        localStorage.setItem("serveurId", sls);
+        
+        this.getIdentifiantServeurPanel().setData({serveur:sls});
+        this.getNumeroTablePanel().setData({table:tls});
     },
     changeButton: function() {
         this.changeTable();

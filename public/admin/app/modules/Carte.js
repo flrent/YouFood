@@ -13,7 +13,6 @@ function(namespace, Backbone) {
   var urlTpls = "admin/app/templates/";
   // Create a new module
   var Carte = namespace.module();
-
   // Carte extendings
   Carte.Model = Backbone.Model.extend({ /* ... */ });
   Carte.Collection = Backbone.Collection.extend({ /* ... */ });
