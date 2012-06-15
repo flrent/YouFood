@@ -526,4 +526,52 @@ app.post('/SetMultipliers', function(req, res){
 	});
 });
 
+app.get('/DishViewed/:idDish/:numTable', function(req, res){
+	var idDish = req.params.idDish;
+	var numTable = req.params.numTable;
+	db.collection("dishes", function(err, dishesCollection){
+		dishesCollection.findOne({_id: new ObjectId(idDish)}, function(err, dishDoc){
+			var stat = {
+				dish : dishDoc,
+				table : parseInt(numTable)
+			};
+			db.createCollection("dishesViewed", function(err, viewedCollection){
+				viewedCollection.insert(stat, {safe:true}, function(err, doc){
+					if(!err){
+						res.send("stat saved");
+					}
+					else{
+						console.log(err);
+						res.send("couldnt save the viewed dish.")
+					}
+				});
+			});
+		});
+	});
+});
+
+app.get('/DishSelected/:idDish/:numTable', function(req, res){
+	var idDish = req.params.idDish;
+	var numTable = req.params.numTable;
+	db.collection("dishes", function(err, dishesCollection){
+		dishesCollection.findOne({_id: new ObjectId(idDish)}, function(err, dishDoc){
+			var stat = {
+				dish : dishDoc,
+				table : parseInt(numTable)
+			};
+			db.createCollection("dishesSelected", function(err, viewedCollection){
+				viewedCollection.insert(stat, {safe:true}, function(err, doc){
+					if(!err){
+						res.send("stat saved");
+					}
+					else{
+						console.log(err);
+						res.send("couldnt save the selected dish.")
+					}
+				});
+			});
+		});
+	});
+});
+
 app.listen(3000);
