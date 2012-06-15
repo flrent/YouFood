@@ -16,8 +16,16 @@ var app = express.createServer(),
   	Db = mongo.Db,
   	ObjectId = mongo.ObjectID,
   	DBref = mongo.DBRef;
-
+	io = require('socket.io').listen(app);
 app.use(require('express').bodyParser());
+
+io.sockets.on('connection', function (socket) {
+
+  socket.on('callWaiter', function (data) {
+  	socket.broadcast.emit("calledWaiter", {message:"salut"});
+  });
+
+});
 
 app.configure(function(){
   app.use(express.static(__dirname + '/public'));
@@ -62,11 +70,10 @@ app.get("/GetAllApp", function(req, res){
 			restoTexts = restoDoc[0];
 			db.collection("menus", function(err, menusCollection){
 				menusCollection.findOne({active:parseInt(1)}, {fields:{"dishes":1}}, function(err, menuDoc){
-					console.log(menuDoc);
 					db.collection("dishes", function(err, dishesCollection){
 						dishesCollection.find({_id:{$in: menuDoc.dishes}}).toArray(function(err, dishesDoc){
 							var menuDishes = dishesDoc;
-							console.log(menuDishes);
+
 							entrees = {
 								name:'Starters',
 								dishes: menuDishes.filter( function(item){return (item.type==0);} )
@@ -89,7 +96,7 @@ app.get("/GetAllApp", function(req, res){
 							menu.push(boissons);
 							resto.infos = restoTexts;
 							resto.menu = menu;
-							console.log(resto);
+
 							res.send(resto);
 						});
 					});
@@ -104,7 +111,7 @@ app.post("/CreateRestaurantInfos", function(req, res){
 	db.createCollection('restaurant_infos',  function(err, collection) {
 		collection.insert(infos, {safe:true}, function(err, doc){
 			if(!err){
-				console.log(doc);
+
 				res.send(doc);
 			}
 			else{
@@ -134,7 +141,6 @@ app.post("/UpdateRestaurantInfos", function(req, res){
 app.get("/GetRestaurantInfos", function(req, res){
 	var infos = db.collection("restaurant_infos", function(err, collection){
 		collection.find({}).toArray(function(err, docs){
-			console.log(docs);
 			res.send(docs[0]);
 		})
 	});
@@ -143,7 +149,6 @@ app.get("/GetRestaurantInfos", function(req, res){
 app.get('/GetMenus', function(req, res){
 	var menus = db.collection('menus', function(err, menuCollection){
 		menuCollection.find({}).toArray(function(err, docs){
-			console.log(docs);
 			res.send(docs);
 		});
 	});	
@@ -160,18 +165,15 @@ app.get('/GetMenusWithDishes', function(req, res){
 				singleMenu.name = menuItem.name;
 				db.collection("dishes", function(err, dishesCollection){
 					dishesCollection.find({_id:{$in: menuItem.dishes}}).toArray(function(err, dishesDoc){
-						console.log(count);
 						if(dishesDoc != null){
 							singleMenu.dishes = dishesDoc;
 						}
 						else{
 							singleMenu.dishes = new Array();
 						}
-						console.log(singleMenu);
 						menuArbo.push(singleMenu);
 						
 						if (count == menuDocs.length) {
-							console.log(menuArbo);
 							res.send(menuArbo);
 						}
 						count++;
@@ -187,7 +189,6 @@ app.get('/GetMenu/:id', function(req, res){
 	var id = req.params.id;
 	var menu = db.collection('menus', function(err, menuCollection){
 		menuCollection.findOne({_id:new ObjectId(id)}, function(err, doc){
-			console.log(doc);
 			res.send(doc);
 		});
 	});
@@ -213,7 +214,6 @@ app.post('/CreateMenu', function(req, res){
 		var doc1 = req.body.menu;
 		collection.insert(doc1, {safe:true}, function(err, doc){
 			if(!err){
-				console.log(doc1);
 				res.send(doc1);
 			}
 			else{
@@ -227,7 +227,6 @@ app.post('/CreateMenu', function(req, res){
 app.post('/UpdateMenu', function(req, res){
 	var menu = req.body.menu;
 	var id = menu._id;
-	logNow("We are updating menu "+id+" : "+menu);
 	db.collection("menus", function(err, collection){
 		collection.findAndModify({_id:new ObjectId(id)}, {safe:true}, {$set:{name:menu.name, active:menu.active}}, function(err, doc){
 			if(!err){
@@ -261,7 +260,6 @@ app.post('/SetMenuActive', function(req, res){
 app.get('/GetDishes', function(req, res){
 	var dishes = db.collection('dishes', function(err, dishCollection){
 		dishCollection.find().toArray(function(err, docs){
-			console.log(docs);
 			res.send(docs);
 		});
 	});	
@@ -271,7 +269,6 @@ app.get('/GetDish/:id', function(req, res){
 	var id = req.params.id;
 	var dish = db.collection('dishes', function(err, dishCollection){
 		dishCollection.findOne({_id:new ObjectId(id)}, function(err, doc){
-			console.log(doc);
 			res.send(doc);
 		});
 	});
@@ -283,7 +280,6 @@ app.get('/GetMenuDishes/:id', function(req, res){
 		menuCollection.findOne({_id:new ObjectId(id)}, {fields:{"dishes":1}}, function(err, doc){
 			db.collection("dishes", function(err, dishesCollection){
 				dishesCollection.find({_id:{$in: doc.dishes}}).toArray(function(err, docs){
-					console.log(docs);
 					res.send(docs);
 				});
 			});
@@ -301,7 +297,6 @@ app.get('/RemoveDish/:id', function(req, res){
 });
 
 app.post('/CreateDish', function(req, res){
-	console.log(req.body.dish);
 	db.createCollection('dishes', function(err, collection) {
 		var doc1 = req.body.dish;
 		collection.insert(doc1, {safe:true}, function(err, doc){
@@ -319,8 +314,6 @@ app.post('/CreateDish', function(req, res){
 app.post('/UpdateDish', function(req, res){
 	var dish = req.body.dish;
 	var id = dish._id;
-	logNow("Modification du dish "+id);
-	logNow("Reception de "+dish);
 	db.collection("dishes", function(err, collection){
 		collection.findAndModify({_id:new ObjectId(id)}, {new:true, safe:true}, {$set:{name:dish.name, price:dish.price, desc:dish.desc, img:dish.img, type:dish.type}}, function(err, doc){
 			if(!err){
@@ -337,7 +330,6 @@ app.post('/UpdateDish', function(req, res){
 app.post('/AddDishToMenu', function(req, res){
 	var idMenu = req.body["idMenu"];
 	var idDish = req.body["idDish"];
-	logNow("Ajout du plat "+idDish+" dans le menu "+idMenu);
 	var menu = db.collection('menus', function(err, menuCollection){
 		menuCollection.update({_id:new ObjectId(idMenu)}, {$addToSet:{"dishes":new ObjectId(idDish)}}, {safe:true}, function(err, menuDoc){
 			if(!err){
@@ -391,7 +383,6 @@ app.post('/CreateOrder', function(req, res){
 	var doc1 = req.body.order;
 
 	db.createCollection('orders', function(err, collection) {
-		logNow(doc1);
 		collection.insert(doc1);
 		res.send("ok");
 	});
@@ -424,10 +415,8 @@ app.get('/GetOrdersInProgress', function(req, res){
 
 app.post('/SetOrderInProgress', function(req, res){
 	var idOrder = req.body["idOrder"];
-	logNow("Nouvelle commande à mettre a inProgress, id="+idOrder);
 	var orders = db.collection("orders", function(err, collection){
 		collection.update({_id:new ObjectId(idOrder)}, {$set:{"status":1}}, function(err, orderDoc){
-			logNow("Order in progress ok.");
 			res.send(orderDoc);
 		});
 	});

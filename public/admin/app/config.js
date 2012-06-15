@@ -13,12 +13,13 @@ require.config({
     underscore: "../assets/js/libs/lodash",
     backbone: "../assets/js/libs/backbone",
     // Shim Plugin
-    use: "../assets/js/plugins/use"
+    use: "../assets/js/plugins/use",
+    socketIO:'/socket.io/socket.io'
   },
 
   use: {
     backbone: {
-      deps: ["underscore", "jquery"],
+      deps: ["underscore", "jquery","socketIO"],
       attach: "Backbone"
     }
   }

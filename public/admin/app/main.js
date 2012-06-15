@@ -4,6 +4,7 @@ require([
   // Libs
   "jquery",
   "use!backbone",
+  "socketIO",
 
   // Modules
   "modules/Accueil",
@@ -13,7 +14,14 @@ require([
   "modules/Statistiques"
 ],
 
-function(namespace, $, Backbone, Accueil, Carte, Commandes, Serveurs, Statistiques) {
+function(namespace, $, Backbone, socketIO, Accueil, Carte, Commandes, Serveurs, Statistiques) {
+  Backbone.socket = io.connect('/');
+
+
+  Backbone.socket.on('calledWaiter', function (data) {
+    alert("un serveur a été appelé !");
+    console.log(data);
+  });
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -50,7 +58,6 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes, Serveurs, Statistiqu
     index: function(hash) {
       var route = this;
       var accueil = new Accueil.Views.Accueil();
-
       // Attach the accueil to the DOM
       accueil.render(function(el) {
         $("#main").html(el);
@@ -65,6 +72,9 @@ function(namespace, $, Backbone, Accueil, Carte, Commandes, Serveurs, Statistiqu
 
           // Set an internal flag to stop recursive looping
           route._alreadyTriggered = true;
+
+
+
         }
       });
     },
