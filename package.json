@@ -1,15 +1,16 @@
 {
-  "name": "youfood",
-  "subdomain": "flrentyoufood",
+  "name": "youfoodapp",
+  "subdomain": "youfoodapp",
   "scripts": {
     "start": "server.js"
   },
-  "version": "0.0.0-3",
+  "version": "0.0.0-1",
   "engines": {
     "node": "0.6.x"
   },
   "dependencies": {
     "mongodb": "1.0.x",
-    "express": "2.5.x"
+    "express": "2.5.x",
+    "socket.io": "0.9.x"
   }
 }

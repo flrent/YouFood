@@ -1,4 +1,4 @@
-body {overflow: scroll;background:#2d1300;}
+body {background:#2d1300;}
 
 .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {width: 1000px;}
 
@@ -12,7 +12,23 @@ body {overflow: scroll;background:#2d1300;}
 	background: url(../img/youfood.png) no-repeat -101px 68px;
 	height: 560px;
 }
+#softnotif {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background:#05C;
+  
+  width:200px;
+  height:100px;
+  color: white;
+  padding: 10px;
+  opacity: 0.8;
 
+  border:1px solid white;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
 
 /* Subnav */
 .subnav {

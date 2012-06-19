@@ -14,12 +14,13 @@ require.config({
     backbone: "../assets/js/libs/backbone",
     // Shim Plugin
     use: "../assets/js/plugins/use",
-    socketIO:'/socket.io/socket.io'
+    socketIO:'/socket.io/socket.io',
+    modal:'../assets/js/plugins/bootstrap-modal'
   },
 
   use: {
     backbone: {
-      deps: ["underscore", "jquery","socketIO"],
+      deps: ["underscore", "jquery","socketIO", "modal"],
       attach: "Backbone"
     }
   }

@@ -1,5 +1,3 @@
-Ext.Loader.setConfig({disableCaching: false});
-
 Ext.application({
     controllers: ["Settings", "Table", "Produit", "Categorie", "Home"],
 

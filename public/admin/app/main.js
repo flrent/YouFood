@@ -5,6 +5,7 @@ require([
   "jquery",
   "use!backbone",
   "socketIO",
+  "modal",
 
   // Modules
   "modules/Accueil",
@@ -14,13 +15,42 @@ require([
   "modules/Statistiques"
 ],
 
-function(namespace, $, Backbone, socketIO, Accueil, Carte, Commandes, Serveurs, Statistiques) {
+function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Serveurs, Statistiques) {
+  
   Backbone.socket = io.connect('/');
+  $("#softnotif").hide();
 
-
+  Backbone.majBadge = function() {
+    $.ajax({
+      type: 'GET',
+      url: '/GetOrdersWaiting',
+      success: function(retour) {
+        $(".badge").html(retour.length);
+      }
+    });
+  };
+  Backbone.majBadge();
   Backbone.socket.on('calledWaiter', function (data) {
-    alert("un serveur a été appelé !");
+    $('#notification .ntitle').html("Serveur appelé");
+    $('#notification .ncontent').html("La table numéro "+data.table+" a demandé qu'un serveur vienne. Le serveur assigné est "+data.serveurId+".");
+    $('#notification').modal();
     console.log(data);
+  });
+  Backbone.socket.on('newOrder', function (data) {
+    $('#softnotif').stop();
+    $('#softnotif').hide();
+    var content = '<h5>'+"Nouvelle commande !"+"</h5>";
+        content+="<p>La table numéro "+data.table+" a passé commande : </p>";
+
+    var liste = "<ul>";
+    _.each(data.order.dishes, function(p) {
+      liste+='<li>'+p.name+"</li>";
+    });
+    liste+="</ul>";
+    content+=liste;
+    $('#softnotif').html(content).fadeIn(500).fadeOut(8000);
+
+    Backbone.majBadge();
   });
 
   // Defining the application router, you can attach sub routers here.
@@ -37,6 +67,7 @@ function(namespace, $, Backbone, socketIO, Accueil, Carte, Commandes, Serveurs, 
       "admin/commandes/preparer/:id":"commandesPreparer",
       "admin/commandes/valider/:id":"commandesValider",
       "admin/commandes/livrer/:id":"commandesLivrer",
+      "admin/commandes/annuler/:id":"commandesAnnuler",
       "admin/serveurs":"serveurs",
       "admin/serveurs/add":"serveursAdd",
       "admin/statistiques":"statistiques",
@@ -118,6 +149,16 @@ function(namespace, $, Backbone, socketIO, Accueil, Carte, Commandes, Serveurs, 
         },
         success: function(retour) {
           Backbone.history.navigate("/admin/commandes/validees", true);
+        }
+      });
+    },
+    commandesAnnuler: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: '/RemoveOrder/'+id,
+        success: function(retour) {
+          Backbone.history.navigate("/admin/commandes", true);
         }
       });
     },
