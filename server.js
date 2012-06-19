@@ -585,7 +585,21 @@ app.get('/DishSelected/:idDish/:numTable', function(req, res){
 
 app.get('/GetVievedStats', function(req, res){
 	db.collection("dishesViewed", function(err, viewedCollection){
+		viewedCollection.group({dish:true}, {}, {"count":0},"function(obj, prev){ prev.count++; }",  function(err, result){
+			var sorted = result.sort( {count:1}, function(err, item){
+				console.log(item);
+			});
+			console.log(sorted);
+			res.send(result);
+		});
+	});
+});
 
+app.get('/GetSelectedStats', function(req, res){
+	db.collection("dishesSelected", function(err, selectedCollection){
+		selectedCollection.group({dish:true}, {}, {"count":0}, "function(obj, prev){prev.count++}", function(err, result){
+			res.send(result);
+		});
 	});
 });
 
