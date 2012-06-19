@@ -20,6 +20,16 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
   Backbone.socket = io.connect('/');
   $("#softnotif").hide();
 
+  Backbone.majBadge = function() {
+    $.ajax({
+      type: 'GET',
+      url: '/GetOrdersWaiting',
+      success: function(retour) {
+        $(".badge").html(retour.length);
+      }
+    });
+  };
+  Backbone.majBadge();
   Backbone.socket.on('calledWaiter', function (data) {
     $('#notification .ntitle').html("Serveur appelé");
     $('#notification .ncontent').html("La table numéro "+data.table+" a demandé qu'un serveur vienne. Le serveur assigné est "+data.serveurId+".");
@@ -40,7 +50,7 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
     content+=liste;
     $('#softnotif').html(content).fadeIn(500).fadeOut(8000);
 
-
+    Backbone.majBadge();
   });
 
   // Defining the application router, you can attach sub routers here.
@@ -57,6 +67,7 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
       "admin/commandes/preparer/:id":"commandesPreparer",
       "admin/commandes/valider/:id":"commandesValider",
       "admin/commandes/livrer/:id":"commandesLivrer",
+      "admin/commandes/annuler/:id":"commandesAnnuler",
       "admin/serveurs":"serveurs",
       "admin/serveurs/add":"serveursAdd",
       "admin/statistiques":"statistiques",
@@ -138,6 +149,16 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
         },
         success: function(retour) {
           Backbone.history.navigate("/admin/commandes/validees", true);
+        }
+      });
+    },
+    commandesAnnuler: function(id) {
+      var that = this;
+      $.ajax({
+        type: 'GET',
+        url: '/RemoveOrder/'+id,
+        success: function(retour) {
+          Backbone.history.navigate("/admin/commandes", true);
         }
       });
     },

@@ -391,7 +391,6 @@ function(namespace, Backbone) {
       var view = this;
       // Fetch the template, render it to the View element and call done.
       namespace.fetchTemplate(this.template, function(tmpl) {
-         $(view.el2).empty();
         view.el.innerHTML = tmpl();
 
         // If a done function is passed, call it with the element
@@ -403,6 +402,7 @@ function(namespace, Backbone) {
       });
     },
     getMenus: function() {
+      $(this.el2).empty();
       var view = this;
       $.ajax({
         type: 'GET',

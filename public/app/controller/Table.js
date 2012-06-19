@@ -26,7 +26,9 @@ Ext.define('YouFood.controller.Table', {
         }
     },
     callWaiter: function() {
+
         socket.emit('callWaiter', { table: localStorage.getItem("table"), serveurId: localStorage.getItem("serveurId") });
+
         Ext.Msg.alert('Waiter called', 'Thank you, a waiter will come see you as soon as possible !' , Ext.emptyFn);
     },
     validerCommande: function() {

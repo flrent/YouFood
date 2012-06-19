@@ -36,9 +36,11 @@ app.configure(function(){
 
 /* bdd */
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-http://ca.linkedin.com/in/florentlamoureux/en
+var db;
 var db = new Db('projectDB', server);
-
+/*Db.connect('mongodb://nodejitsu:8fc02e6e3570f1f0cf5fd3e7d746691d@flame.mongohq.com:27097/nodejitsudb949541195674', function(err, dab) {
+	setDb(dab);
+});*/
 
 
 db.open(function(err, db) {
