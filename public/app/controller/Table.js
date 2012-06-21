@@ -33,6 +33,7 @@ Ext.define('YouFood.controller.Table', {
     },
     validerCommande: function() {
         var commande = [];
+        var prixFinal = 0;
 
         this.getTable().getStore().each(function(record) {
             commande.push({
@@ -43,6 +44,9 @@ Ext.define('YouFood.controller.Table', {
                 "price":record.get("price"),
                 "type":record.get("type")
             });
+            if(!isNaN(record.get("price"))) {
+                prixFinal += parseInt(record.get("price"));
+            }
             console.log(record.get("name")+ " ajouté à la commande");
         }, this);
 
@@ -50,6 +54,7 @@ Ext.define('YouFood.controller.Table', {
             "table":localStorage.getItem("table"),
             "serveurId":localStorage.getItem("serveurId"),
             "dishes":commande,
+            "total":prixFinal,
             "status":0,
             "orderTime":new Date()
         };

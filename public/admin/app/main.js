@@ -71,8 +71,8 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
       "admin/serveurs":"serveurs",
       "admin/serveurs/add":"serveursAdd",
       "admin/statistiques":"statistiques",
-      "admin/statistiques/serveurs":"statsServeurs",
-      "admin/statistiques/tables":"statsTables",
+      "admin/statistiques/produits":"statsProduits",
+      "admin/statistiques/commandes":"statsCommandes",
       "/getDishes":"getDishes",
       "/getComposition":"getComposition",
       "/RemoveDish/:id":'removeDish',
@@ -109,6 +109,7 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
         }
       });
     },
+
     commandes: function() {
       new Commandes.Views.Accueil().render();
       Backbone.history.navigate("/admin/commandes", false);
@@ -184,8 +185,8 @@ function(namespace, $, Backbone, socketIO, modal, Accueil, Carte, Commandes, Ser
     statistiques: function() {
       new Statistiques.Views.Accueil().render();
     },
-    statsServeurs: function() {
-      new Statistiques.Views.Serveurs().render();
+    statsCommandes: function() {
+      new Statistiques.Views.Commandes().render();
     },
     statsProduits: function() {
       new Statistiques.Views.Produits().render();
