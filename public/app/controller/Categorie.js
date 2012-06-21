@@ -13,7 +13,11 @@ Ext.define('YouFood.controller.Categorie', {
         }
     },
     platSelected: function(dt, index, item, record, e,opts) {
-       this.getAccueil().push({
+        Ext.Ajax.request({
+            url: '/DishViewed/'+record.get("_id")+"/"+localStorage.getItem("table")
+        });
+
+        this.getAccueil().push({
             title:"YouFood",
             cls:'produit',
             id:'produitContainer',
