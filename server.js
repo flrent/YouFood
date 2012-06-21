@@ -393,12 +393,21 @@ app.get('/RemoveOrder/:id', function(req, res){
 });
 
 app.post('/CreateOrder', function(req, res){
-
 	var doc1 = req.body.order;
-
 	db.createCollection('orders', function(err, collection) {
-		collection.insert(doc1);
-		res.send("ok");
+		collection.insert(doc1, function(err, doc){
+			db.createCollection("dishesSelected", function(err, selectedCollection){
+				doc1.dishes.forEach(function(dishItem){
+					var stat = {
+						dish : dishItem,
+						table : parseInt(doc1.table)
+					};
+					console.log(stat);
+					selectedCollection.insert(stat);
+				});
+			});
+			res.send("ok");
+		});	
 	});
 });
 
